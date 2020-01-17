@@ -66,15 +66,15 @@ script(type='text/javascript').
     let div = L.DomUtil.create('div', 'info legend');
     let labels = ['<strong>Legende</strong>'];
     let categories = [
-      { color: "blue", type: "Mitglied" },
+      { color: "blue", type: "reg. Mitglied" },
       { color: "gold", type: "Ehrenmitglied" },
       { color: "green", type: "Juniormitglied" },
       { color: "grey", type: "Seniormitglied" },
-      { color: "black", type: "Außerord. Mitglied" }
+      { color: "black", type: "außerord. Mitglied" }
     ];
 
     categories.forEach(c => {
-      labels.push('<span class="circle" style="background-color:' + c.color + '"></span> ' + c.type);
+      labels.push('<img src="https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + c.color + '.png" class="legend-icon"> ' + c.type);
     });
     div.innerHTML = labels.join('<br>');
     return div;
