@@ -10,6 +10,7 @@
   },
   "author": "Jan Sprinz <neo@neothethird.de>",
   "license": "GPL-3.0",
+  "homepage": "http://atlas.gesellschaft-fuer-neuropaediatrie.org/",
   "repository": "https://github.com/neothethird/atlas",
   "dependencies": {
     "dotenv": "^8.2.0",
@@ -22,8 +23,8 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.7.0",
-    "eslint-plugin-jsdoc": "^18.4.3",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-jsdoc": "^18.11.0",
     "eslint-plugin-prettier": "^3.1.2",
     "nodemon": "^1.19.4",
     "prettier": "^1.19.1"
