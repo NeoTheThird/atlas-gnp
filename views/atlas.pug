@@ -18,7 +18,7 @@ script(type='text/javascript').
   map.setView(L.latLng(47.728569,10.315784), 6);
 
   const Http = new XMLHttpRequest();
-  const url='http://localhost:7000/api/getAtlas';
+  const url='/api/getAtlas';
   Http.open("GET", url);
   Http.send();
 
