@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const api = require("./GnpApi")(
   "https://mitglieder.gesellschaft-fuer-neuropaediatrie.org/",

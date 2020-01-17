@@ -155,7 +155,8 @@ class GnpApi {
                 })
               );
           });
-        }).then(members => {
+        })
+        .then(members => {
           //console.log("updated atlas cache")
           this.cache["atlas"] = {
             data: members,
@@ -163,7 +164,7 @@ class GnpApi {
           };
           return members;
         });
-      }
+    }
   }
 
   /**

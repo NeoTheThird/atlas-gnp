@@ -6,4 +6,4 @@ Built using [openstreetmap](https://www.openstreetmap.org).
 
 ## Installing
 
-Run `npm install` in the root of the directory and `npm start` to serve on port `7000`.
+Create a `.env`-File with your `GEO_API_KEY` and `GNP_API_KEY` in the root of the repository and run `npm install`. Run `npm start` to serve on port `7000`.
