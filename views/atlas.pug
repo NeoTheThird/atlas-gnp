@@ -61,6 +61,26 @@ script(type='text/javascript').
     })
   };
 
+  var legend = L.control({position: 'bottomleft'});
+  legend.onAdd = function (map) {
+    let div = L.DomUtil.create('div', 'info legend');
+    let labels = ['<strong>Legende</strong>'];
+    let categories = [
+      { color: "blue", type: "Mitglied" },
+      { color: "gold", type: "Ehrenmitglied" },
+      { color: "green", type: "Juniormitglied" },
+      { color: "grey", type: "Seniormitglied" },
+      { color: "black", type: "Außerord. Mitglied" }
+    ];
+
+    categories.forEach(c => {
+      labels.push('<span class="circle" style="background-color:' + c.color + '"></span> ' + c.type);
+    });
+    div.innerHTML = labels.join('<br>');
+    return div;
+  };
+  legend.addTo(map);
+
   const Http = new XMLHttpRequest();
   const url='/api/getAtlas';
   Http.open("GET", url);
