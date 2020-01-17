@@ -127,12 +127,12 @@ class GnpApi {
           "nachname",
           "key_atlasjn",
           "key_atlasfreigabe1",
-          "key_atlasfreigabe2"
+          "key_atlasfreigabe2",
+          "key_mitgliedsstatus"
         ],
         "g_strasse is not null and g_strasse <> '' and " +
           "g_plz is not null and g_plz <> '' and " +
-          "g_ort is not null and g_ort <> '' and " +
-          "g_land is not null and g_land <> ''"
+          "g_ort is not null and g_ort <> ''"
       )
         .then(this.atlasFilter)
         .then(this.countryFilter)
@@ -160,6 +160,7 @@ class GnpApi {
           members.map(member => {
             return {
               latlong: member.latlong,
+              color: member.color,
               popup: GnpApi.createAtlasLabelHtml(member)
             };
           })
@@ -209,6 +210,7 @@ class GnpApi {
           return ret;
         case "GER":
         case "D":
+        case "":
           ret.g_land = "Deutschland";
           return ret;
         case "A":
@@ -228,7 +230,19 @@ class GnpApi {
    */
   atlasFilter(members) {
     return members
-      .filter(member => !member.key_atlasjn.startsWith("NEIN"))
+      .filter(member => {
+        return (
+          !member.key_atlasjn.startsWith("NEIN") &&
+          (
+            (member.key_mitgliedsstatus === "Ehrenmitglied") ||
+            (member.key_mitgliedsstatus === "Außerordentliches Mitglied, natürl. Person") ||
+            (member.key_mitgliedsstatus === "Senior, ohne NEP") ||
+            (member.key_mitgliedsstatus === "Junior") ||
+            (member.key_mitgliedsstatus === "Junior, Elternzeit") ||
+            (member.key_mitgliedsstatus === "Mitglied")
+          )
+        );
+      })
       .map(member => {
         let ret = {
           g_strasse: member.g_strasse,
@@ -237,6 +251,16 @@ class GnpApi {
           g_ort: member.g_ort,
           popup: true
         };
+        // Set color
+        ret.color = member.key_mitgliedsstatus.includes("Ehrenmitglied")
+          ? "gold"
+          : member.key_mitgliedsstatus.includes("Außerordentliches Mitglied")
+          ? "black"
+          : member.key_mitgliedsstatus.includes("Junior")
+          ? "green"
+          : member.key_mitgliedsstatus.includes("Senior")
+          ? "grey"
+          : "blue";
         // Display everyone who has not explicitly opted out
         if (member.key_atlasjn === "") {
           member.key_atlasfreigabe1 = "Var. 1";
