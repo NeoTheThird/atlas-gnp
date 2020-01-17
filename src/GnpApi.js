@@ -138,7 +138,6 @@ class GnpApi {
         .then(this.countryFilter)
         .then(members => {
           return members.filter(member => {
-            member.popup = GnpApi.createAtlasLabelHtml(member);
             return geo
               .get(
                 member.g_strasse +
@@ -157,6 +156,14 @@ class GnpApi {
               );
           });
         })
+        .then(members =>
+          members.map(member => {
+            return {
+              latlong: member.latlong,
+              popup: GnpApi.createAtlasLabelHtml(member)
+            };
+          })
+        )
         .then(members => {
           //console.log("updated atlas cache")
           this.cache["atlas"] = {
