@@ -138,6 +138,7 @@ class GnpApi {
         .then(this.countryFilter)
         .then(members => {
           return members.filter(member => {
+            member.popup = GnpApi.createAtlasLabelHtml(member);
             return geo
               .get(
                 member.g_strasse +
@@ -264,6 +265,55 @@ class GnpApi {
         }
         return ret;
       });
+  }
+
+  /**
+   * Create an atlas label html string
+   *
+   * @param {object} member - member returned from the api
+   * @returns {string} - sanitized members
+   */
+  static createAtlasLabelHtml(member) {
+    if (member.popup) {
+      return (
+        (member.g_homepage
+          ? '<a href ="' + member.g_homepage + '" target="_blank">'
+          : "") +
+        "<h1>" +
+        (member.firma
+          ? member.firma + (member.g_co ? " (" + member.g_co + ") " : "")
+          : member.title + " " + member.firstname + " " + member.lastname) +
+        "</h1>" +
+        (member.g_homepage ? "</a>" : "") +
+        (member.branche ? "<h2>" + member.branche + "</h2>" : "") +
+        (member.beschreibung || "") +
+        //- "<img src=\"" + member.fotourl + "\" alt=\"" + member.name + "\" width=20% height=20% style=\"float: right;\"></img>" +
+        "<h2>" +
+        member.titel +
+        " " +
+        member.vorname +
+        " " +
+        member.nachname +
+        "</h2>" +
+        (member.berufsfunktion
+          ? "<h3>" + member.berufsfunktion + "</h3>"
+          : "") +
+        (member.g_telefon ? "<p> Telefon: " + member.g_telefon + "</p>" : "") +
+        (member.g_email ? "<p> E-Mail: " + member.g_email + "</p>" : "") +
+        (member.g_mobil ? "<p> Mobil: " + member.g_mobil + "</p>" : "") +
+        "<p>" +
+        member.g_strasse +
+        "</br>" +
+        member.g_plz +
+        " " +
+        member.g_ort +
+        "</br>" +
+        member.g_land +
+        "</p>"
+      );
+    } else {
+      return false;
+    }
   }
 }
 
