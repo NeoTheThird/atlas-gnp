@@ -132,7 +132,8 @@ class GnpApi {
         ],
         "g_strasse is not null and g_strasse <> '' and " +
           "g_plz is not null and g_plz <> '' and " +
-          "g_ort is not null and g_ort <> ''"
+          "g_ort is not null and g_ort <> '' and " +
+          "g_land is not null and g_land <> ''"
       )
         .then(this.atlasFilter)
         .then(this.countryFilter)
