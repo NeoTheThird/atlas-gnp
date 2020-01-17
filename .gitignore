@@ -1,0 +1,14 @@
+# dependencies
+/node_modules
+
+# build
+dist
+
+# testing
+/coverage
+
+# environment vars
+.env
+
+# atlas-specific
+.geo-cache

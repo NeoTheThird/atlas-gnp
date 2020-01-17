@@ -1,0 +1,31 @@
+{
+  "name": "atlas-gnp",
+  "version": "0.1.0",
+  "description": "A map showing all Neuropaediatricians in Germany, Austria and Switzerland.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "npx nodemon src/server.js",
+    "lint": "./node_modules/.bin/eslint \"**/*.js\"",
+    "lint-fix": "npm run lint -- --fix"
+  },
+  "author": "Jan Sprinz <neo@neothethird.de>",
+  "license": "GPL-3.0",
+  "repository": "https://github.com/neothethird/atlas",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "node-geocoder": "^3.25.0",
+    "node-storage": "0.0.9",
+    "pug": "^2.0.4",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.8"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-jsdoc": "^18.4.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "nodemon": "^1.19.4",
+    "prettier": "^1.19.1"
+  }
+}
