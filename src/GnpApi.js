@@ -228,7 +228,7 @@ class GnpApi {
    */
   atlasFilter(members) {
     return members
-      .filter(member => member.key_atlasjn.startsWith("Ja"))
+      .filter(member => !member.key_atlasjn.startsWith("NEIN"))
       .map(member => {
         let ret = {
           g_strasse: member.g_strasse,
@@ -237,6 +237,10 @@ class GnpApi {
           g_ort: member.g_ort,
           popup: true
         };
+        // Display everyone who has not explicitly opted out
+        if (member.key_atlasjn === "") {
+          member.key_atlasfreigabe1 = "Var. 1";
+        }
         // general information
         if (member.key_atlasfreigabe1.startsWith("Var. 1")) {
           // no popup
