@@ -156,6 +156,9 @@ class GnpApi {
               );
           });
         })
+        .then(members => members.filter(
+          member => member.latlong
+        ))
         .then(members =>
           members.map(member => {
             return {
