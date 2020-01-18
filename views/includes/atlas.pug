@@ -7,7 +7,7 @@ script(type='text/javascript').
   L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright" target="_blank">OpenStreetMap</a> contributors | <a href="https://gesellschaft-fuer-neuropaediatrie.org/" target="_blank">Gesellschaft für Neuropädiatrie</a>'
   }).addTo(map);
-  map.setView(L.latLng(47.728569,10.315784), 6);
+  map.setView(L.latLng(51,10.3), 6);
 
   //- https://github.com/pointhi/leaflet-color-markers
   const icons = {
@@ -85,7 +85,9 @@ script(type='text/javascript').
 
     if (!added) {
       added = true;
-      let markers = L.markerClusterGroup();
+      let markers = L.markerClusterGroup({
+        maxClusterRadius: 45
+      });
       members.forEach(member => {
         let marker = L.marker(
           member.latlong,
