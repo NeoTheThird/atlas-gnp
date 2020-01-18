@@ -22,5 +22,9 @@ app.get("/api/getAtlas", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.render("atlas");
+  res.render("index");
+});
+
+app.get("/embed", (req, res) => {
+  res.render("embed");
 });
