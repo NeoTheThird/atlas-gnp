@@ -3,6 +3,7 @@
 
 body, html {
   height:100%;
+  font-family: FSJackWeb-Regular, Arial, Helvetica, sans-serif;
 }
 
 .legend {
@@ -15,4 +16,17 @@ body, html {
 .legend-icon {
   height: 2em;
   width: auto;
+}
+
+#osm-map {
+  font-family: inherit;
+}
+
+@font-face {
+  font-family: 'FSJackWeb-Regular';
+  src: url('/fonts/FSJackWeb-Regular.eot'); /* IE9 */
+  src: url('/fonts/FSJackWeb-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('/fonts/FSJackWeb-Regular.woff') format('woff');  /* Modern Browsers */
+  font-weight: normal;
+  font-style: normal;
 }
