@@ -1,5 +1,6 @@
 const request = require("request-promise-native");
 const Geocoder = require("./Geocoder");
+const utils = require("./utils");
 
 const geo = new Geocoder();
 
@@ -335,11 +336,11 @@ class GnpApi {
           m.g_plz + " " + m.g_ort + "<br>" +
           m.g_land + "<br>" +
         "</p><p>" +
-          (m.g_homepage ? "Homepage: " + m.g_homepage + "<br>" : "") +
-          (m.g_telefon ? "Telefon: " + m.g_telefon + "<br>" : "") +
-          (m.g_fax ? "Fax: " + m.g_fax + "<br>" : "") +
-          (m.g_email ? "Mail: " + m.g_email + "<br>" : "") +
-          (m.g_mobil ? "Mobil: " + m.g_mobil + "<br>" : "") +
+          utils.formatUrlLabel("Homepage: ", m.g_homepage) +
+          utils.formatUrlLabel("Telefon: ", m.g_telefon, "fon:") +
+          utils.formatUrlLabel("Fax: ", m.g_fax, "fon:") +
+          utils.formatUrlLabel("Mail: ", m.g_email, "mailto:") +
+          utils.formatUrlLabel("Mobil: ", m.g_mobil, "fon:") +
         "</p>"
       );
       let about = (
