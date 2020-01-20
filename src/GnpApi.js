@@ -337,10 +337,10 @@ class GnpApi {
           m.g_land + "<br>" +
         "</p><p>" +
           utils.formatUrlLabel("Homepage: ", m.g_homepage) +
-          utils.formatUrlLabel("Telefon: ", m.g_telefon, "fon:") +
-          utils.formatUrlLabel("Fax: ", m.g_fax, "fon:") +
+          utils.formatUrlLabel("Telefon: ", m.g_telefon, "tel:") +
+          utils.formatUrlLabel("Fax: ", m.g_fax, "tel:") +
           utils.formatUrlLabel("Mail: ", m.g_email, "mailto:") +
-          utils.formatUrlLabel("Mobil: ", m.g_mobil, "fon:") +
+          utils.formatUrlLabel("Mobil: ", m.g_mobil, "tel:") +
         "</p>"
       );
       let about = (

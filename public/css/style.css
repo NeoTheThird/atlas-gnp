@@ -1,9 +1,12 @@
 /* nothing to see here yet */
 * { margin: 0; padding: 0; }
 
+/* scheme #00377, #3EA9E9, #000000 */
+
 body, html {
   height:100%;
   font-family: FSJackWeb-Regular, Arial, Helvetica, sans-serif;
+  color: #000;
 }
 
 .legend {
@@ -24,6 +27,14 @@ body, html {
 
 .leaflet-popup-content p {
   margin: 0.5em 0 !important;
+}
+
+.leaflet-popup-content h1, h3 {
+  color: #003770;
+}
+
+.leaflet-popup-content a {
+  color: #3EA9E9;
 }
 
 .leaflet-popup-content ul {

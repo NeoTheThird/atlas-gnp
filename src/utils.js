@@ -1,5 +1,10 @@
 /**
  * add a href to a link and format a label
+ *
+ * @param {string} label - Label describing the link
+ * @param {string} href - Link url
+ * @param {string} [protocol] - Protocol for the url
+ * @returns {string} - formatted html
  */
 function formatUrlLabel (label, href, protocol = "") {
   return href ?
