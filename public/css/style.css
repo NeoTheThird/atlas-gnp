@@ -21,6 +21,14 @@ body, html {
   width: auto;
 }
 
+.dot {
+  height: 1em;
+  width: 1em;
+  background-color: #003770;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 #osm-map {
   font-family: inherit;
 }

@@ -1,6 +1,5 @@
 #osm-map
 script(type='text/javascript').
-  // Create map
   var element = document.getElementById('osm-map');
   element.style = 'height:100vh;';
   var map = L.map(element);
@@ -9,64 +8,32 @@ script(type='text/javascript').
   }).addTo(map);
   map.setView(L.latLng(51,10.3), 6);
 
-  //- https://github.com/pointhi/leaflet-color-markers
-  const icons = {
-    gold: new L.Icon({
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
+  function getIcon(member) {
+    let type = member.popup ? "_full" : "_half"
+    return new L.icon({
+      iconUrl: '/img/pin_' + member.color + type + '.svg',
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
       iconSize: [25, 41],
       iconAnchor: [12, 41],
       popupAnchor: [1, -34],
       shadowSize: [41, 41]
-    }),
-    black: new L.Icon({
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    }),
-    green: new L.Icon({
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    }),
-    grey: new L.Icon({
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    }),
-    blue: new L.Icon({
-      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    })
-  };
+    });
+  }
 
   var legend = L.control({position: 'bottomleft'});
   legend.onAdd = function (map) {
     let div = L.DomUtil.create('div', 'info legend');
     let labels = ['<strong>Legende</strong>'];
     let categories = [
-      { color: "blue", type: "ord. Mitglied" },
+      { color: "#003777", type: "ord. Mitglied" },
+      { color: "#3EA9E9", type: "Juniormitglied" },
       { color: "gold", type: "Ehrenmitglied" },
-      { color: "green", type: "Juniormitglied" },
       { color: "grey", type: "Seniormitglied" },
       { color: "black", type: "außerord. Mitglied" }
     ];
 
     categories.forEach(c => {
-      labels.push('<img src="https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + c.color + '.png" class="legend-icon"> ' + c.type);
+      labels.push('<span class="dot" style="background-color: ' + c.color + ';"></span> ' + c.type);
     });
     div.innerHTML = labels.join('<br>');
     return div;
@@ -93,14 +60,14 @@ script(type='text/javascript').
           member.latlong,
           {
             title: member.name,
-            icon: icons[member.color]
+            icon: getIcon(member)
           }
         );
         if (member.popup) {
-          marker.bindPopup(member.popup)
+          marker.bindPopup(member.popup);
         }
         markers.addLayer(marker);
       });
-      map.addLayer(markers)
+      map.addLayer(markers);
     }
   }
