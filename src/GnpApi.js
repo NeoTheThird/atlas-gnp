@@ -309,47 +309,50 @@ class GnpApi {
   /**
    * Create an atlas label html string
    *
-   * @param {object} member - member returned from the api
+   * @param {object} m - member returned from the api
    * @returns {string} - sanitized members
    */
-  static createAtlasLabelHtml(member) {
-    if (member.popup) {
-      return (
-        (member.g_homepage
-          ? '<a href ="' + member.g_homepage + '" target="_blank">'
-          : "") +
+  static createAtlasLabelHtml(m) {
+    if (m.popup) {
+      let head = (
         "<h1>" +
-        (member.firma
-          ? member.firma + (member.g_co ? " (" + member.g_co + ") " : "")
-          : member.title + " " + member.firstname + " " + member.lastname) +
+          (
+            (m.titel ? m.titel + " " : "") +
+            (m.vorname ? m.vorname + " " : "") +
+            (m.nachname ? m.nachname : "")
+          ) +
         "</h1>" +
-        (member.g_homepage ? "</a>" : "") +
-        (member.branche ? "<h2>" + member.branche + "</h2>" : "") +
-        (member.beschreibung || "") +
-        //- "<img src=\"" + member.fotourl + "\" alt=\"" + member.name + "\" width=20% height=20% style=\"float: right;\"></img>" +
-        "<h2>" +
-        member.titel +
-        " " +
-        member.vorname +
-        " " +
-        member.nachname +
-        "</h2>" +
-        (member.berufsfunktion
-          ? "<h3>" + member.berufsfunktion + "</h3>"
-          : "") +
-        (member.g_telefon ? "<p> Telefon: " + member.g_telefon + "</p>" : "") +
-        (member.g_email ? "<p> E-Mail: " + member.g_email + "</p>" : "") +
-        (member.g_mobil ? "<p> Mobil: " + member.g_mobil + "</p>" : "") +
+        (m.berufsfunktion ? "<h3>" + m.berufsfunktion + "</h3>": "")
+      );
+      let address = (
+        "<hr>" +
+        (m.g_homepage ? "<a href='" + m.g_homepage + "' target=_blank>" : "") +
+        (m.firma ? "<h2>" + m.firma + "</h2>" : "") +
+        (m.g_homepage ? "</a>" : "") +
+        (m.g_co ? "<h3>" + m.g_co + "</h3>" : "") +
         "<p>" +
-        member.g_strasse +
-        "</br>" +
-        member.g_plz +
-        " " +
-        member.g_ort +
-        "</br>" +
-        member.g_land +
+          m.g_strasse + "<br>" +
+          m.g_plz + " " + m.g_ort + "<br>" +
+          m.g_land + "<br>" +
+        "</p><p>" +
+          (m.g_homepage ? "Homepage: " + m.g_homepage + "<br>" : "") +
+          (m.g_telefon ? "Telefon: " + m.g_telefon + "<br>" : "") +
+          (m.g_fax ? "Fax: " + m.g_fax + "<br>" : "") +
+          (m.g_email ? "Mail: " + m.g_email + "<br>" : "") +
+          (m.g_mobil ? "Mobil: " + m.g_mobil + "<br>" : "") +
         "</p>"
       );
+      let about = (
+        (
+          (m.branche || m.beschreibung) ?
+            "<hr>" +
+            "<h3>Beschreibung und Tätigkeitsschwerpunkte</h3>" +
+            (m.branche ? "<p>Art der Einrichtung: " + m.branche + "</p>" : "") +
+            (m.beschreibung ? m.beschreibung.trim() : "") :
+          ""
+        )
+      );
+      return head + address + about;
     } else {
       return false;
     }

@@ -22,6 +22,14 @@ body, html {
   font-family: inherit;
 }
 
+.leaflet-popup-content p {
+  margin: 0.5em 0 !important;
+}
+
+.leaflet-popup-content ul {
+  margin-left: 1.5em;
+}
+
 @font-face {
   font-family: 'FSJackWeb-Regular';
   src: url('/fonts/FSJackWeb-Regular.eot'); /* IE9 */
