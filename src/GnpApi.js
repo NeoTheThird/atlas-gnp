@@ -158,9 +158,7 @@ class GnpApi {
               );
           });
         })
-        .then(members => members.filter(
-          member => member.latlong
-        ))
+        .then(members => members.filter(member => member.latlong))
         .then(members =>
           members.map(member => {
             return {
@@ -238,14 +236,13 @@ class GnpApi {
       .filter(member => {
         return (
           !member.key_atlasjn.startsWith("NEIN") &&
-          (
-            (member.key_mitgliedsstatus === "Ehrenmitglied") ||
-            (member.key_mitgliedsstatus === "Außerordentliches Mitglied, natürl. Person") ||
-            (member.key_mitgliedsstatus === "Senior, ohne NEP") ||
-            (member.key_mitgliedsstatus === "Junior") ||
-            (member.key_mitgliedsstatus === "Junior, Elternzeit") ||
-            (member.key_mitgliedsstatus === "Mitglied")
-          )
+          (member.key_mitgliedsstatus === "Ehrenmitglied" ||
+            member.key_mitgliedsstatus ===
+              "Außerordentliches Mitglied, natürl. Person" ||
+            member.key_mitgliedsstatus === "Senior, ohne NEP" ||
+            member.key_mitgliedsstatus === "Junior" ||
+            member.key_mitgliedsstatus === "Junior, Elternzeit" ||
+            member.key_mitgliedsstatus === "Mitglied")
         );
       })
       .map(member => {
@@ -315,44 +312,42 @@ class GnpApi {
    */
   static createAtlasLabelHtml(m) {
     if (m.popup) {
-      let head = (
+      let head =
         "<h1>" +
-          (
-            (m.titel ? m.titel + " " : "") +
-            (m.vorname ? m.vorname + " " : "") +
-            (m.nachname ? m.nachname : "")
-          ) +
+        ((m.titel ? m.titel + " " : "") +
+          (m.vorname ? m.vorname + " " : "") +
+          (m.nachname ? m.nachname : "")) +
         "</h1>" +
-        (m.berufsfunktion ? "<h3>" + m.berufsfunktion + "</h3>": "")
-      );
-      let address = (
+        (m.berufsfunktion ? "<h3>" + m.berufsfunktion + "</h3>" : "");
+      let address =
         "<hr>" +
         (m.g_homepage ? "<a href='" + m.g_homepage + "' target=_blank>" : "") +
         (m.firma ? "<h2>" + m.firma + "</h2>" : "") +
         (m.g_homepage ? "</a>" : "") +
         (m.g_co ? "<h3>" + m.g_co + "</h3>" : "") +
         "<p>" +
-          m.g_strasse + "<br>" +
-          m.g_plz + " " + m.g_ort + "<br>" +
-          m.g_land + "<br>" +
+        m.g_strasse +
+        "<br>" +
+        m.g_plz +
+        " " +
+        m.g_ort +
+        "<br>" +
+        m.g_land +
+        "<br>" +
         "</p><p>" +
-          utils.formatUrlLabel("Homepage: ", m.g_homepage) +
-          utils.formatUrlLabel("Telefon: ", m.g_telefon, "tel:") +
-          utils.formatUrlLabel("Fax: ", m.g_fax, "tel:") +
-          utils.formatUrlLabel("Mail: ", m.g_email, "mailto:") +
-          utils.formatUrlLabel("Mobil: ", m.g_mobil, "tel:") +
-        "</p>"
-      );
-      let about = (
-        (
-          (m.branche || m.beschreibung) ?
-            "<hr>" +
+        utils.formatUrlLabel("Homepage: ", m.g_homepage) +
+        utils.formatUrlLabel("Telefon: ", m.g_telefon, "tel:") +
+        utils.formatUrlLabel("Fax: ", m.g_fax, "tel:") +
+        utils.formatUrlLabel("Mail: ", m.g_email, "mailto:") +
+        utils.formatUrlLabel("Mobil: ", m.g_mobil, "tel:") +
+        "</p>";
+      let about =
+        m.branche || m.beschreibung
+          ? "<hr>" +
             "<h3>Beschreibung und Tätigkeitsschwerpunkte</h3>" +
             (m.branche ? "<p>Art der Einrichtung: " + m.branche + "</p>" : "") +
-            (m.beschreibung ? m.beschreibung.trim() : "") :
-          ""
-        )
-      );
+            (m.beschreibung ? m.beschreibung.trim() : "")
+          : "";
       return head + address + about;
     } else {
       return false;

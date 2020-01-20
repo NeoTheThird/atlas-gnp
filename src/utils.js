@@ -6,14 +6,18 @@
  * @param {string} [protocol] - Protocol for the url
  * @returns {string} - formatted html
  */
-function formatUrlLabel (label, href, protocol = "") {
-  return href ?
-    label + "<a href='" + (protocol || "") + href + "' target=_blank>" +
-    href.replace("https://", "").replace("http://", "") + "</a><br>" :
-    "";
+function formatUrlLabel(label, href, protocol = "") {
+  return href
+    ? label +
+        "<a href='" +
+        (protocol || "") +
+        href +
+        "' target=_blank>" +
+        href.replace("https://", "").replace("http://", "") +
+        "</a><br>"
+    : "";
 }
-
 
 module.exports = {
   formatUrlLabel: formatUrlLabel
-}
+};
