@@ -16,9 +16,16 @@ body, html {
   background-color: #bbb;
 }
 
-.legend-icon {
-  height: 2em;
+.logo {
+  z-index: 500;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  height: 5em;
   width: auto;
+  background-color: white;
+  border-radius: 1em;
+  padding: 1em;
 }
 
 .dot {
