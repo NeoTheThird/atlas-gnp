@@ -18,6 +18,14 @@ function formatUrlLabel(label, href, protocol = "") {
     : "";
 }
 
+/**
+ * get current time in seconds
+ *
+ * @returns {number} - time in seconds
+ */
+const time = () => Math.floor(new Date() / 1000);
+
 module.exports = {
-  formatUrlLabel: formatUrlLabel
+  formatUrlLabel: formatUrlLabel,
+  time: time
 };

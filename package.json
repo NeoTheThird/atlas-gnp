@@ -5,11 +5,14 @@
   "main": "src/server.js",
   "scripts": {
     "start": "npx nodemon src/server.js",
-    "lint": "./node_modules/.bin/eslint \"**/*.js\"",
-    "lint-fix": "npm run lint -- --fix"
+    "lint": "./node_modules/.bin/eslint \"src/**/*.js\"",
+    "lint-fix": "npm run lint -- --fix",
+    "test": "mocha --recursive ./tests/unit-tests",
+    "test-pipeline": "./node_modules/nyc/bin/nyc.js --exclude=**/test_*.js --reporter=text --reporter=lcov mocha -- -R spec './tests/unit-tests/**'",
+    "jsdoc": "./node_modules/jsdoc/jsdoc.js -c jsdoc-config.json"
   },
   "author": "Jan Sprinz <neo@neothethird.de>",
-  "license": "GPL-3.0",
+  "license": "GPL-3.0-or-later",
   "homepage": "http://atlas.gesellschaft-fuer-neuropaediatrie.org/",
   "repository": "https://github.com/neothethird/atlas",
   "dependencies": {
@@ -22,11 +25,18 @@
     "request-promise-native": "^1.0.8"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "coveralls": "^3.0.9",
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.9.0",
+    "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-jsdoc": "^18.11.0",
     "eslint-plugin-prettier": "^3.1.2",
+    "jsdoc": "^3.6.3",
     "nodemon": "^1.19.4",
-    "prettier": "^1.19.1"
+    "nyc": "^15.0.0",
+    "prettier": "^1.19.1",
+    "sinon": "^8.1.1",
+    "sinon-chai": "^3.4.0"
   }
 }

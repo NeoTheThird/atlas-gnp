@@ -1,11 +1,11 @@
 # dependencies
 /node_modules
 
-# build
-dist
-
-# testing
+# ci
 /coverage
+/out
+/tests/test-data/.geo-cache
+/.nyc_output
 
 # environment vars
 .env

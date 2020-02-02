@@ -2,9 +2,10 @@ const NodeGeocoder = require("node-geocoder");
 const Storage = require("node-storage");
 
 /**
- * Geocoder
+ * MapQuest geocoder with caching
  *
- * @classdesc A geocoder with caching
+ * @property {Storage} cache - node-storage object
+ * @property {NodeGeocoder} api - node-geocoder api client
  */
 class Geocoder {
   /**
@@ -17,7 +18,7 @@ class Geocoder {
     this.api = NodeGeocoder({
       provider: "mapquest",
       httpAdapter: "https",
-      apiKey: process.env.GEO_API_KEY,
+      apiKey: key,
       formatter: null
     });
   }

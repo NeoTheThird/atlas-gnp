@@ -1,8 +1,10 @@
 require("dotenv").config();
 const express = require("express");
-const api = require("./GnpApi")(
+const GnpApi = require("./GnpApi");
+const api = new GnpApi(
   "https://mitglieder.gesellschaft-fuer-neuropaediatrie.org/",
   process.env.GNP_API_KEY,
+  process.env.GEO_API_KEY,
   3600
 );
 

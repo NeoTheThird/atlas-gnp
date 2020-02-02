@@ -2,32 +2,37 @@ const request = require("request-promise-native");
 const Geocoder = require("./Geocoder");
 const utils = require("./utils");
 
-const geo = new Geocoder();
-
 /**
- * get current time in seconds
+ * @class GnpCacheObject
+ * @classdesc cached data object
  *
- * @returns {number} - time in seconds
+ * @property {object} data - returned data
+ * @property {number} expires - time in seconds when the cache expires
  */
-const time = () => Math.floor(new Date() / 1000);
 
 /**
- * GnpApi
+ * Gnp api client with caching
  *
- * @classdesc An api client with caching
+ * @property {string} host - host url
+ * @property {string} token - A/$USER/MD5($PASSWORD)
+ * @property {number} cachetime - how many seconds to keep cache
+ * @property {object} cache - cache storage object
+ * @property {GnpCacheObject} cache.{url} - cache objects with urls as keys
  */
 class GnpApi {
   /**
    * @constructs GnpApi
    * @param {string} host - host url
-   * @param {string} token - A/$USER/MD5($PASSWORD)
+   * @param {string} gnpApiToken - A/$USER/MD5($PASSWORD)
+   * @param {string} geoApiToken - geo api token
    * @param {number} [cachetime=60] - how many seconds to keep cache
    */
-  constructor(host, token, cachetime = 60) {
+  constructor(host, gnpApiToken, geoApiToken, cachetime = 60) {
     this.host = host;
-    this.token = token;
+    this.token = gnpApiToken;
     this.cachetime = cachetime;
     this.cache = {};
+    this.geo = new Geocoder(geoApiToken);
   }
 
   /**
@@ -38,7 +43,7 @@ class GnpApi {
    * @returns {Promise} - resolves data or rejects error
    */
   get(endpoint, extra = {}) {
-    let now = time();
+    let now = utils.time();
     let extraString = "";
     for (const property in extra) {
       if (extra.hasOwnProperty(property)) {
@@ -103,7 +108,7 @@ class GnpApi {
    * @returns {Promise} - resolves members or rejects error
    */
   getAtlas() {
-    let now = time();
+    let now = utils.time();
     if (this.cache["atlas"] && this.cache["atlas"].expires > now) {
       //console.log("use cache atlas");
       return Promise.resolve(this.cache["atlas"].data);
@@ -141,7 +146,7 @@ class GnpApi {
         .then(this.countryFilter)
         .then(members => {
           return members.filter(member => {
-            return geo
+            return this.geo
               .get(
                 member.g_strasse +
                   " " +
@@ -356,4 +361,4 @@ class GnpApi {
   }
 }
 
-module.exports = (host, token, cachetime) => new GnpApi(host, token, cachetime);
+module.exports = GnpApi;
