@@ -1,5 +1,7 @@
 # Atlas Neuropädiatrie DACH 2.0
 
+[![Build Status](https://travis-ci.com/NeoTheThird/atlas-gnp.svg?branch=master)](https://travis-ci.com/NeoTheThird/atlas-gnp) [![Coverage Status](https://coveralls.io/repos/github/NeoTheThird/atlas-gnp/badge.svg?branch=master)](https://coveralls.io/github/NeoTheThird/atlas-gnp?branch=master)
+
 A [map](https://atlas.gesellschaft-fuer-neuropaediatrie.org/) showing all Neuro-Paediatricians in Germany, Austria and Switzerland. Provided by the [GNP](https://gesellschaft-fuer-neuropaediatrie.org/).
 
 Built using [openstreetmap](https://www.openstreetmap.org).
