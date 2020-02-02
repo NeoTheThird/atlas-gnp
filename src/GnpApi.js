@@ -12,7 +12,8 @@ const geo = new Geocoder();
 const time = () => Math.floor(new Date() / 1000);
 
 /**
- * @class GnpApi
+ * GnpApi
+ *
  * @classdesc An api client with caching
  */
 class GnpApi {

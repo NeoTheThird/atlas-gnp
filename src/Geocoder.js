@@ -2,7 +2,8 @@ const NodeGeocoder = require("node-geocoder");
 const Storage = require("node-storage");
 
 /**
- * @class Geocoder
+ * Geocoder
+ *
  * @classdesc A geocoder with caching
  */
 class Geocoder {
