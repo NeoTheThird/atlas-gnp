@@ -4,8 +4,6 @@ A [map](https://atlas.gesellschaft-fuer-neuropaediatrie.org/) showing all Neuro-
 
 Built using [openstreetmap](https://www.openstreetmap.org).
 
-<iframe width="100%" height="100%" style="min-height: 30em;" src="https://atlas.spri.nz/embed" frameborder="0"></iframe>
-
 ## Installing
 
 Create a `.env`-File with your `GEO_API_KEY` ([MapQuest](https://developer.mapquest.com/)) and `GNP_API_KEY` ([VereinOnline](https://www.vereinonline.org/api)) in the root of the repository:
