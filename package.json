@@ -7,8 +7,8 @@
     "start": "npx nodemon src/server.js",
     "lint": "./node_modules/.bin/eslint \"src/**/*.js\"",
     "lint-fix": "npm run lint -- --fix",
-    "test": "mocha --recursive ./tests/unit-tests",
-    "test-pipeline": "./node_modules/nyc/bin/nyc.js --exclude=**/test_*.js --reporter=text --reporter=lcov mocha -- -R spec './tests/unit-tests/**'",
+    "test": "./node_modules/mocha/bin/mocha --recursive ./tests/unit-tests",
+    "test-pipeline": "./node_modules/nyc/bin/nyc.js --exclude=**/test_*.js --reporter=text --reporter=lcov ./node_modules/mocha/bin/mocha -- -R spec './tests/unit-tests/**'",
     "jsdoc": "./node_modules/jsdoc/jsdoc.js -c jsdoc-config.json"
   },
   "author": "Jan Sprinz <neo@neothethird.de>",
@@ -33,6 +33,7 @@
     "eslint-plugin-jsdoc": "^18.11.0",
     "eslint-plugin-prettier": "^3.1.2",
     "jsdoc": "^3.6.3",
+    "mocha": "^7.0.1",
     "nodemon": "^1.19.4",
     "nyc": "^15.0.0",
     "prettier": "^1.19.1",
