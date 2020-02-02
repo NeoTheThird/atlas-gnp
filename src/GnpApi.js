@@ -255,13 +255,13 @@ class GnpApi {
         };
         // Set color
         ret.color = member.key_mitgliedsstatus.includes("Ehrenmitglied")
-          ? "black"
+          ? "gold"
           : member.key_mitgliedsstatus.includes("Außerordentliches Mitglied")
           ? "black"
           : member.key_mitgliedsstatus.includes("Junior")
           ? "lightblue"
           : member.key_mitgliedsstatus.includes("Senior")
-          ? "black"
+          ? "grey"
           : "blue";
         // Display everyone who has not explicitly opted out
         if (member.key_atlasjn === "") {
