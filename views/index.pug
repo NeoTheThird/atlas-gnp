@@ -1,7 +1,11 @@
 head
   title Atlas Neuropädiatrie
   include includes/head.pug
-a(href="https://gesellschaft-fuer-neuropaediatrie.org/" target="_blank")
-  img(src="https://gesellschaft-fuer-neuropaediatrie.org/wp-content/uploads/2018/06/GNP_Website_Header-Logo.png" alt="Gesellschaft für Neuropädiatrie").logo
+#logo
+  a(href="https://gesellschaft-fuer-neuropaediatrie.org/" target="_blank")
+    img(src="https://gesellschaft-fuer-neuropaediatrie.org/wp-content/uploads/2018/06/GNP_Website_Header-Logo.png" alt="Gesellschaft für Neuropädiatrie").logo
+.hidden#fullscreen-button
+  a(href="https://atlas.spri.nz/" target="_blank")
+    img(src="/img/fullscreen.png" alt="Enlarge").fullscreen-button
 include includes/scripts.pug
 include includes/atlas.pug

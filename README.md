@@ -68,10 +68,22 @@ location / {
 
 You may also want to create a cron job (or incorporate it into the established update workflow in some other way) to regularly pull the changes from the repositories `origin master` and `npm install` the updated production dependencies.
 
+## URL parameters
+
+There are a couple options available as url parameters that can be used like `https://<url>/?parameter=value&otherParameter=otherValue` All of them are optional:
+
+| Parameter | Default | Description |
+|---|---|---|
+| `lat` | 51 | Latitude to center the map on |
+| `long` | 51 | Longitude to center the map on |
+| `zoom` | 6 | Initial zoom level |
+| `radius` | 45 | pixel radius for clustering |
+| `embed` | false | use embed mode (hide logo, show fullscreen-button) |
+
 ## Embedding
 
 Thea atlas can easily be embedded using an iFrame. The following is an example of a responsive iFrame that should work fine in WordPress:
 
 ```html
-<iframe width="100%" height="100%" style="min-height: 30em;" src="https://atlas.spri.nz/embed" frameborder="0"></iframe>
+<iframe width="100%" height="100%" style="min-height: 30em;" src="https://atlas.spri.nz/?embed=true" frameborder="0"></iframe>
 ```

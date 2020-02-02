@@ -28,12 +28,28 @@ body, html {
   padding: 1em;
 }
 
+.fullscreen-button {
+  z-index: 500;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  height: 3em;
+  width: auto;
+  background-color: white;
+  border-radius: 1em;
+  padding: .5em;
+}
+
 .dot {
   height: 1em;
   width: 1em;
   background-color: #003770;
   border-radius: 50%;
   display: inline-block;
+}
+
+.hidden {
+  display: none !important;
 }
 
 #osm-map {

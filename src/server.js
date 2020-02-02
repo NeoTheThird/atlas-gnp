@@ -25,6 +25,13 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+// needed for backwards-compatibility
 app.get("/embed", (req, res) => {
-  res.render("embed");
+  res.redirect("/?embed=true");
+});
+
+app.get("/favicon.ico", (req, res) => {
+  res.redirect(
+    "https://gesellschaft-fuer-neuropaediatrie.org/wp-content/uploads/2018/10/cropped-apple-touch-icon-152x152-32x32.png"
+  );
 });
