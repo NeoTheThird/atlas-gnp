@@ -73,7 +73,7 @@ There are a couple options available as url parameters that can be used like `ht
 | Parameter | Default | Description |
 |---|---|---|
 | `lat` | 51 | Latitude to center the map on |
-| `long` | 51 | Longitude to center the map on |
+| `long` | 10.3 | Longitude to center the map on |
 | `zoom` | 6 | Initial zoom level |
 | `radius` | 45 | pixel radius for clustering |
 | `embed` | false | use embed mode (hide logo, show fullscreen-button) |
