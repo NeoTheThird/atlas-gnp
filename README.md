@@ -80,7 +80,7 @@ There are a couple options available as url parameters that can be used like `ht
 
 ## Embedding
 
-Thea atlas can easily be embedded using an iFrame. The following is an example of a responsive iFrame that should work fine in WordPress:
+The atlas can easily be embedded using an iFrame. The following is an example of a responsive iFrame that should work fine in WordPress:
 
 ```html
 <iframe width="100%" height="100%" style="min-height: 30em;" src="https://atlas.spri.nz/?embed=true" frameborder="0"></iframe>
