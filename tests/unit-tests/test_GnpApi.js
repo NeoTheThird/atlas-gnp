@@ -536,7 +536,9 @@ describe("GnpApi module", function() {
           beschreibung: "beschreibung",
           g_homepage: "g_homepage"
         })
-      ).to.eql("<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>Homepage: <a href='g_homepage' target=_blank>g_homepage</a><br></p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3><p>Art der Einrichtung: branche</p>beschreibung");
+      ).to.eql(
+        "<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>Homepage: <a href='g_homepage' target=_blank>g_homepage</a><br></p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3><p>Art der Einrichtung: branche</p>beschreibung"
+      );
       expect(
         GnpApi.createAtlasLabelHtml({
           popup: true,
@@ -549,7 +551,9 @@ describe("GnpApi module", function() {
           branche: "branche",
           g_homepage: "g_homepage"
         })
-      ).to.eql("<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>Homepage: <a href='g_homepage' target=_blank>g_homepage</a><br></p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3><p>Art der Einrichtung: branche</p>");
+      ).to.eql(
+        "<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>Homepage: <a href='g_homepage' target=_blank>g_homepage</a><br></p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3><p>Art der Einrichtung: branche</p>"
+      );
       expect(
         GnpApi.createAtlasLabelHtml({
           popup: true,
@@ -562,10 +566,12 @@ describe("GnpApi module", function() {
           beschreibung: "beschreibung",
           g_homepage: "g_homepage"
         })
-      ).to.eql("<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>Homepage: <a href='g_homepage' target=_blank>g_homepage</a><br></p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3>beschreibung");
+      ).to.eql(
+        "<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>Homepage: <a href='g_homepage' target=_blank>g_homepage</a><br></p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3>beschreibung"
+      );
     });
     it("should return false if no label needed", function() {
-      expect(GnpApi.createAtlasLabelHtml({popup: false})).to.eql(false);
+      expect(GnpApi.createAtlasLabelHtml({ popup: false })).to.eql(false);
     });
   });
 });
