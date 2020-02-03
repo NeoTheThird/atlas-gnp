@@ -79,5 +79,64 @@ describe("GnpApi module", function() {
           done();
         });
     });
+    it("should resolve cache", function(done) {
+      const requestFake = sinon.spy();
+      const _GnpApi = proxyquire("../../src/GnpApi", {
+        "request-promise-native": requestFake,
+        "./utils": {
+          time: () => 1234
+        }
+      });
+
+      const api = new _GnpApi(
+        "https://www.testurl.com",
+        "gnpApiToken",
+        "geoApiToken"
+      );
+
+      api.cache = {
+        "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken": {
+          data: { test: "data" },
+          expires: 1294
+        }
+      };
+
+      api
+        .get("testendpoint", {
+          additional: "stuff"
+        })
+        .then(r => {
+          expect(r).to.eql({
+            test: "data"
+          });
+          expect(api.cache).to.eql({
+            "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken": {
+              data: { test: "data" },
+              expires: 1294
+            }
+          });
+          expect(requestFake).to.not.have.been.called;
+          done();
+        });
+    });
+    it("should reject on error", function(done) {
+      const requestFake = sinon.fake.rejects("everything exploded");
+      const _GnpApi = proxyquire("../../src/GnpApi", {
+        "request-promise-native": requestFake
+      });
+
+      const api = new _GnpApi(
+        "https://www.testurl.com",
+        "gnpApiToken",
+        "geoApiToken"
+      );
+
+      api.get("testendpoint").catch(e => {
+        expect(e.message).to.eql("Error: everything exploded");
+        expect(api.cache).to.eql({});
+        expect(requestFake).to.have.been.calledOnce;
+        done();
+      });
+    });
   });
 });
