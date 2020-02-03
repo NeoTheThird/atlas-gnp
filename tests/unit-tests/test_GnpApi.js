@@ -240,26 +240,24 @@ describe("GnpApi module", function() {
       );
 
       api.cache = {
-        "atlas": {
+        atlas: {
           data: { test: "data" },
           expires: 1294
         }
       };
 
-      api
-        .getAtlas()
-        .then(r => {
-          expect(r).to.eql({
-            test: "data"
-          });
-          expect(api.cache).to.eql({
-            "atlas": {
-              data: { test: "data" },
-              expires: 1294
-            }
-          });
-          done();
+      api.getAtlas().then(r => {
+        expect(r).to.eql({
+          test: "data"
         });
+        expect(api.cache).to.eql({
+          atlas: {
+            data: { test: "data" },
+            expires: 1294
+          }
+        });
+        done();
+      });
     });
   });
   describe("countryFilter()", function() {
@@ -284,47 +282,290 @@ describe("GnpApi module", function() {
       "Sachsen",
       "Sachsen-Anhalt",
       "Thüringen"
-    ].forEach(state => it("should filter " + state, function() {
+    ].forEach(state =>
+      it("should filter " + state, function() {
+        const api = new GnpApi(
+          "https://www.testurl.com",
+          "gnpApiToken",
+          "geoApiToken"
+        );
+        expect(
+          api.countryFilter([
+            {
+              g_land: state
+            }
+          ])
+        ).to.eql([
+          {
+            g_land: "Deutschland (" + state + ")"
+          }
+        ]);
+      })
+    );
+    ["D", "GER", ""].forEach(alias =>
+      it("should filter " + alias, function() {
+        const api = new GnpApi(
+          "https://www.testurl.com",
+          "gnpApiToken",
+          "geoApiToken"
+        );
+        expect(
+          api.countryFilter([
+            {
+              g_land: alias
+            }
+          ])
+        ).to.eql([
+          {
+            g_land: "Deutschland"
+          }
+        ]);
+      })
+    );
+    ["A"].forEach(alias =>
+      it("should filter " + alias, function() {
+        const api = new GnpApi(
+          "https://www.testurl.com",
+          "gnpApiToken",
+          "geoApiToken"
+        );
+        expect(
+          api.countryFilter([
+            {
+              g_land: alias
+            }
+          ])
+        ).to.eql([
+          {
+            g_land: "Österreich"
+          }
+        ]);
+      })
+    );
+  });
+  describe("atlasFilter()", function() {
+    it("should sanitize data", function() {
       const api = new GnpApi(
         "https://www.testurl.com",
         "gnpApiToken",
         "geoApiToken"
       );
-      expect(api.countryFilter([{
-        g_land: state
-      }])).to.eql([{
-        g_land: "Deutschland (" + state + ")"
-      }]);
-    }));
-    [
-      "D",
-      "GER",
-      ""
-    ].forEach(alias => it("should filter " + alias, function() {
-      const api = new GnpApi(
-        "https://www.testurl.com",
-        "gnpApiToken",
-        "geoApiToken"
-      );
-      expect(api.countryFilter([{
-        g_land: alias
-      }])).to.eql([{
-        g_land: "Deutschland"
-      }]);
-    }));
-    [
-      "A"
-    ].forEach(alias => it("should filter " + alias, function() {
-      const api = new GnpApi(
-        "https://www.testurl.com",
-        "gnpApiToken",
-        "geoApiToken"
-      );
-      expect(api.countryFilter([{
-        g_land: alias
-      }])).to.eql([{
-        g_land: "Österreich"
-      }]);
-    }));
+      expect(
+        api.atlasFilter([
+          {
+            key_atlasjn: "NEIN NEIN NEIN"
+          },
+          {
+            key_atlasjn: "",
+            key_mitgliedsstatus: "Mitglied",
+            key_atlasfreigabe2: "",
+            g_land: "country",
+            g_ort: "ort",
+            g_plz: "1337",
+            g_strasse: "street"
+          },
+          {
+            key_atlasjn: "",
+            key_mitgliedsstatus: "Außerordentliches Mitglied, natürl. Person",
+            key_atlasfreigabe2: "",
+            g_land: "country",
+            g_ort: "ort",
+            g_plz: "1337",
+            g_strasse: "street"
+          },
+          {
+            key_atlasjn: "Ja",
+            key_atlasfreigabe1: "Var. 3",
+            key_atlasfreigabe2: "Zusatz 2",
+            key_mitgliedsstatus: "Senior, ohne NEP",
+            g_land: "country",
+            g_ort: "ort",
+            g_plz: "1337",
+            g_strasse: "street",
+            berufsfunktion: "berufsfunktion",
+            beschreibung: "beschreibung",
+            branche: "branche",
+            g_co: "C/O",
+            g_homepage: "example.com",
+            g_telefon: 123,
+            firma: "firma",
+            nachname: "nachname",
+            vorname: "vorname",
+            name: "name",
+            titel: "Dr. Dr. Dr."
+          },
+          {
+            key_atlasjn: "Ja",
+            key_atlasfreigabe1: "Var. 4",
+            key_atlasfreigabe2: "Zusatz 2",
+            key_mitgliedsstatus: "Ehrenmitglied",
+            g_land: "country",
+            g_ort: "ort",
+            g_plz: "1337",
+            g_strasse: "street",
+            berufsfunktion: "berufsfunktion",
+            beschreibung: "beschreibung",
+            branche: "branche",
+            g_co: "C/O",
+            g_homepage: "example.com",
+            g_mobil: 12345,
+            g_telefon: 123,
+            firma: "firma",
+            nachname: "nachname",
+            vorname: "vorname",
+            name: "name",
+            titel: "Dr. Dr. Dr.",
+            g_email: "g_email"
+          },
+          {
+            key_atlasjn: "Ja",
+            key_atlasfreigabe1: "Var. 5",
+            key_atlasfreigabe2: "Zusatz 2",
+            key_mitgliedsstatus: "Junior",
+            g_land: "country",
+            g_ort: "ort",
+            g_plz: "1337",
+            g_strasse: "street",
+            berufsfunktion: "berufsfunktion",
+            beschreibung: "beschreibung",
+            branche: "branche",
+            g_co: "C/O",
+            g_homepage: "example.com",
+            g_mobil: 12345,
+            g_telefon: 123,
+            firma: "firma",
+            nachname: "nachname",
+            vorname: "vorname",
+            name: "name",
+            titel: "Dr. Dr. Dr.",
+            g_email: "g_email"
+          }
+        ])
+      ).to.eql([
+        {
+          color: "blue",
+          g_land: "country",
+          g_ort: "ort",
+          g_plz: "1337",
+          g_strasse: "street",
+          popup: false
+        },
+        {
+          color: "black",
+          g_land: "country",
+          g_ort: "ort",
+          g_plz: "1337",
+          g_strasse: "street",
+          popup: false
+        },
+        {
+          berufsfunktion: "berufsfunktion",
+          beschreibung: "beschreibung",
+          branche: "branche",
+          color: "grey",
+          g_co: "C/O",
+          g_homepage: "example.com",
+          g_land: "country",
+          g_ort: "ort",
+          g_plz: "1337",
+          g_strasse: "street",
+          g_telefon: 123,
+          popup: true,
+          firma: "firma",
+          nachname: "nachname",
+          vorname: "vorname",
+          name: "name",
+          titel: "Dr. Dr. Dr."
+        },
+        {
+          berufsfunktion: "berufsfunktion",
+          beschreibung: "beschreibung",
+          branche: "branche",
+          color: "gold",
+          firma: "firma",
+          g_co: "C/O",
+          g_email: "g_email",
+          g_homepage: "example.com",
+          g_land: "country",
+          g_mobil: 12345,
+          g_ort: "ort",
+          g_plz: "1337",
+          g_strasse: "street",
+          nachname: "nachname",
+          name: "name",
+          popup: true,
+          titel: "Dr. Dr. Dr.",
+          vorname: "vorname"
+        },
+        {
+          berufsfunktion: "berufsfunktion",
+          beschreibung: "beschreibung",
+          branche: "branche",
+          color: "lightblue",
+          firma: "firma",
+          g_co: "C/O",
+          g_email: "g_email",
+          g_homepage: "example.com",
+          g_land: "country",
+          g_mobil: 12345,
+          g_telefon: 123,
+          g_ort: "ort",
+          g_plz: "1337",
+          g_strasse: "street",
+          nachname: "nachname",
+          name: "name",
+          popup: true,
+          titel: "Dr. Dr. Dr.",
+          vorname: "vorname"
+        }
+      ]);
+    });
+  });
+  describe("createAtlasLabelHtml()", function() {
+    it("should create label", function() {
+      expect(
+        GnpApi.createAtlasLabelHtml({
+          popup: true,
+          g_ort: "ort",
+          g_co: "C/O",
+          g_plz: "1337",
+          g_strasse: "street",
+          g_land: "country",
+          berufsfunktion: "chef vom dienst",
+          branche: "branche",
+          beschreibung: "beschreibung",
+          g_homepage: "g_homepage"
+        })
+      ).to.eql("<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>Homepage: <a href='g_homepage' target=_blank>g_homepage</a><br></p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3><p>Art der Einrichtung: branche</p>beschreibung");
+      expect(
+        GnpApi.createAtlasLabelHtml({
+          popup: true,
+          g_ort: "ort",
+          g_co: "C/O",
+          g_plz: "1337",
+          g_strasse: "street",
+          g_land: "country",
+          berufsfunktion: "chef vom dienst",
+          branche: "branche",
+          g_homepage: "g_homepage"
+        })
+      ).to.eql("<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>Homepage: <a href='g_homepage' target=_blank>g_homepage</a><br></p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3><p>Art der Einrichtung: branche</p>");
+      expect(
+        GnpApi.createAtlasLabelHtml({
+          popup: true,
+          g_ort: "ort",
+          g_co: "C/O",
+          g_plz: "1337",
+          g_strasse: "street",
+          g_land: "country",
+          berufsfunktion: "chef vom dienst",
+          beschreibung: "beschreibung",
+          g_homepage: "g_homepage"
+        })
+      ).to.eql("<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>Homepage: <a href='g_homepage' target=_blank>g_homepage</a><br></p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3>beschreibung");
+    });
+    it("should return false if no label needed", function() {
+      expect(GnpApi.createAtlasLabelHtml({popup: false})).to.eql(false);
+    });
   });
 });
