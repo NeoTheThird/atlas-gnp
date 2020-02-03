@@ -38,7 +38,7 @@ describe("Geocoder module", function() {
     it("should throw if no key is specified", function(done) {
       try {
         new Geocoder();
-      } catch(e) {
+      } catch (e) {
         expect(e.message).to.eql("MapQuestGeocoder needs an apiKey");
         done();
       }
@@ -49,10 +49,10 @@ describe("Geocoder module", function() {
       const geocoder = new Geocoder("asdf", CACHE_PATH);
       geocoder.api = {
         geocode: sinon.fake.rejects("invalid api key")
-      }
+      };
       geocoder.cache = {
         get: sinon.fake.returns(undefined)
-      }
+      };
       geocoder.get("test").catch(e => {
         expect(geocoder.api.geocode).to.have.been.calledWith("test");
         expect(e.message).to.eql("Error: invalid api key");
@@ -63,7 +63,7 @@ describe("Geocoder module", function() {
       const geocoder = new Geocoder("asdf", CACHE_PATH);
       geocoder.cache = {
         get: sinon.fake.returns("data")
-      }
+      };
       geocoder.get("test").then(r => {
         expect(geocoder.cache.get).to.have.been.calledWith("test");
         done();
@@ -73,11 +73,11 @@ describe("Geocoder module", function() {
       const geocoder = new Geocoder("asdf", CACHE_PATH);
       geocoder.api = {
         geocode: sinon.fake.resolves("data")
-      }
+      };
       geocoder.cache = {
         get: sinon.fake.returns(undefined),
         put: sinon.spy()
-      }
+      };
       geocoder.get("test").then(r => {
         expect(geocoder.cache.get).to.have.been.calledWith("test");
         expect(geocoder.cache.put).to.have.been.called;

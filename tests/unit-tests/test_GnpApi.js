@@ -19,6 +19,7 @@
 
 const chai = require("chai");
 const sinon = require("sinon");
+const proxyquire = require("proxyquire").noCallThru();
 const chaiAsPromised = require("chai-as-promised");
 const sinonChai = require("sinon-chai");
 const expect = chai.expect;
@@ -36,6 +37,47 @@ describe("GnpApi module", function() {
       expect(gnpApi.geo).to.exist;
       expect(gnpApi.cachetime).to.eql(60);
       expect(gnpApi.cache).to.eql({});
+    });
+  });
+  describe("get()", function() {
+    it("should resolve endpoint", function(done) {
+      const requestFake = sinon.fake.resolves(
+        JSON.stringify({
+          test: "data"
+        })
+      );
+      const _GnpApi = proxyquire("../../src/GnpApi", {
+        "request-promise-native": requestFake,
+        "./utils": {
+          time: () => 1234
+        }
+      });
+
+      const api = new _GnpApi(
+        "https://www.testurl.com",
+        "gnpApiToken",
+        "geoApiToken"
+      );
+
+      api
+        .get("testendpoint", {
+          additional: "stuff"
+        })
+        .then(r => {
+          expect(r).to.eql({
+            test: "data"
+          });
+          expect(api.cache).to.eql({
+            "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken": {
+              data: { test: "data" },
+              expires: 1294
+            }
+          });
+          expect(requestFake).to.have.been.calledWith(
+            "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken"
+          );
+          done();
+        });
     });
   });
 });

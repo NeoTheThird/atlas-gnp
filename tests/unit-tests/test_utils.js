@@ -33,10 +33,16 @@ describe("utils", function() {
       expect(utils.formatUrlLabel()).to.eql("");
     });
     it("should format label with protocol", function() {
-      expect(utils.formatUrlLabel("Phone", "https://example.com", "tel:")).to.eql("Phone<a href=\'tel:https://example.com\' target=_blank>example.com</a><br>");
+      expect(
+        utils.formatUrlLabel("Phone", "https://example.com", "tel:")
+      ).to.eql(
+        "Phone<a href='tel:https://example.com' target=_blank>example.com</a><br>"
+      );
     });
     it("should format label", function() {
-      expect(utils.formatUrlLabel("Phone", "example.com")).to.eql("Phone<a href='example.com' target=_blank>example.com</a><br>");
+      expect(utils.formatUrlLabel("Phone", "example.com")).to.eql(
+        "Phone<a href='example.com' target=_blank>example.com</a><br>"
+      );
     });
   });
   describe("time()", function() {
