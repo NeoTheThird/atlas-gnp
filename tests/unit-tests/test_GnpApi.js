@@ -262,4 +262,69 @@ describe("GnpApi module", function() {
         });
     });
   });
+  describe("countryFilter()", function() {
+    [
+      "NRW",
+      "Nordrhein-Westfalen",
+      "Schleswig-Holstein",
+      "Rheinland-Pfalz",
+      "RLP",
+      "Saarland",
+      "Baden-Württemberg",
+      "BaWü",
+      "Ba-Wü",
+      "Bayern",
+      "Berlin",
+      "Brandenburg",
+      "Bremen",
+      "Hamburg",
+      "Hessen",
+      "Mecklenburg-Vorpommern",
+      "Niedersachsen",
+      "Sachsen",
+      "Sachsen-Anhalt",
+      "Thüringen"
+    ].forEach(state => it("should filter " + state, function() {
+      const api = new GnpApi(
+        "https://www.testurl.com",
+        "gnpApiToken",
+        "geoApiToken"
+      );
+      expect(api.countryFilter([{
+        g_land: state
+      }])).to.eql([{
+        g_land: "Deutschland (" + state + ")"
+      }]);
+    }));
+    [
+      "D",
+      "GER",
+      ""
+    ].forEach(alias => it("should filter " + alias, function() {
+      const api = new GnpApi(
+        "https://www.testurl.com",
+        "gnpApiToken",
+        "geoApiToken"
+      );
+      expect(api.countryFilter([{
+        g_land: alias
+      }])).to.eql([{
+        g_land: "Deutschland"
+      }]);
+    }));
+    [
+      "A"
+    ].forEach(alias => it("should filter " + alias, function() {
+      const api = new GnpApi(
+        "https://www.testurl.com",
+        "gnpApiToken",
+        "geoApiToken"
+      );
+      expect(api.countryFilter([{
+        g_land: alias
+      }])).to.eql([{
+        g_land: "Österreich"
+      }]);
+    }));
+  });
 });
