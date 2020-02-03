@@ -59,25 +59,30 @@ describe("GnpApi module", function() {
         "geoApiToken"
       );
 
-      api
-        .get("testendpoint", {
-          additional: "stuff"
-        })
-        .then(r => {
-          expect(r).to.eql({
-            test: "data"
-          });
-          expect(api.cache).to.eql({
-            "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken": {
-              data: { test: "data" },
-              expires: 1294
-            }
-          });
-          expect(requestFake).to.have.been.calledWith(
-            "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken"
-          );
-          done();
+      // HACK test hasOwnPrototype
+      /**
+       *
+       */
+      function extra() {
+        this.additional = "stuff";
+      }
+      extra.prototype = { some: "bs" };
+
+      api.get("testendpoint", new extra()).then(r => {
+        expect(r).to.eql({
+          test: "data"
         });
+        expect(api.cache).to.eql({
+          "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken": {
+            data: { test: "data" },
+            expires: 1294
+          }
+        });
+        expect(requestFake).to.have.been.calledWith(
+          "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken"
+        );
+        done();
+      });
     });
     it("should resolve cache", function(done) {
       const requestFake = sinon.spy();
