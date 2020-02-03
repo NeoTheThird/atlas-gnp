@@ -139,4 +139,127 @@ describe("GnpApi module", function() {
       });
     });
   });
+  describe("getMembers()", function() {
+    it("should resolve members", function() {
+      const api = new GnpApi(
+        "https://www.testurl.com",
+        "gnpApiToken",
+        "geoApiToken"
+      );
+      api.get = sinon.fake.resolves({
+        test: "data"
+      });
+      api.getMembers().then(r => {
+        expect(r).to.eql({
+          test: "data"
+        });
+        expect(api.get).to.have.been.calledWith("GetMembers", {
+          felder: "",
+          filter: ""
+        });
+      });
+    });
+  });
+  describe("getMember()", function() {
+    it("should resolve members", function() {
+      const api = new GnpApi(
+        "https://www.testurl.com",
+        "gnpApiToken",
+        "geoApiToken"
+      );
+      api.get = sinon.fake.resolves({
+        test: "data"
+      });
+      api.getMember().then(r => {
+        expect(r).to.eql({
+          test: "data"
+        });
+        expect(api.get).to.have.been.calledWith("GetMember", {
+          id: undefined
+        });
+      });
+    });
+  });
+  describe("getAtlas()", function() {
+    it("should resolve members", function() {
+      const api = new GnpApi(
+        "https://www.testurl.com",
+        "gnpApiToken",
+        "geoApiToken"
+      );
+      api.getMembers = sinon.fake.resolves([
+        {
+          g_strasse: "test data",
+          g_land: "test data",
+          g_plz: "test data",
+          g_ort: "test data",
+          g_co: "test data",
+          g_homepage: "test data",
+          g_telefon: "test data",
+          g_mobil: "test data",
+          g_email: "test data",
+          titel: "test data",
+          firma: "test data",
+          berufsfunktion: "test data",
+          funktion: "test data",
+          beschreibung: "test data",
+          branche: "test data",
+          vorname: "test data",
+          nachname: "test data",
+          key_atlasjn: "test data",
+          key_atlasfreigabe1: "test data",
+          key_atlasfreigabe2: "test data",
+          key_mitgliedsstatus: "Mitglied"
+        }
+      ]);
+      api.geo = {
+        get: sinon.fake.resolves([1, 2])
+      };
+      api.getAtlas().then(r => {
+        expect(r).to.eql([
+          {
+            latlong: [1, 2],
+            color: "blue",
+            popup:
+              "<h1>test data test data test data</h1><hr><h2>test data</h2><p>test data<br>test data test data<br>test data<br></p><p></p>"
+          }
+        ]);
+      });
+    });
+    it("should resolve cache", function(done) {
+      const _GnpApi = proxyquire("../../src/GnpApi", {
+        "./utils": {
+          time: () => 1234
+        }
+      });
+
+      const api = new _GnpApi(
+        "https://www.testurl.com",
+        "gnpApiToken",
+        "geoApiToken"
+      );
+
+      api.cache = {
+        "atlas": {
+          data: { test: "data" },
+          expires: 1294
+        }
+      };
+
+      api
+        .getAtlas()
+        .then(r => {
+          expect(r).to.eql({
+            test: "data"
+          });
+          expect(api.cache).to.eql({
+            "atlas": {
+              data: { test: "data" },
+              expires: 1294
+            }
+          });
+          done();
+        });
+    });
+  });
 });
