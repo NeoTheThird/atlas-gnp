@@ -348,6 +348,40 @@ describe("GnpApi module", function() {
       })
     );
   });
+  describe("getStats()", function() {
+    it("should resolve stats", function(done) {
+      const _GnpApi = proxyquire("../../src/GnpApi", {
+        "./utils": {
+          time: () => 1234
+        }
+      });
+      const api = new _GnpApi(
+        "https://www.testurl.com",
+        "gnpApiToken",
+        "geoApiToken"
+      );
+      api.cache = {
+        atlas: {
+          expires: 1337
+        }
+      };
+      api.getAtlas = sinon.fake.resolves([
+        { popup: false },
+        { popup: false },
+        { popup: true }
+      ]);
+      api.getRawAtlasMembers = sinon.fake.resolves([]);
+      api.getStats().then(r => {
+        expect(r).to.eql({
+          hidden: -3,
+          nopopup: 2,
+          popup: 1,
+          age: 43
+        });
+        done();
+      });
+    });
+  });
   describe("atlasFilter()", function() {
     it("should sanitize data", function() {
       const api = new GnpApi(

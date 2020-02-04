@@ -12,3 +12,5 @@ function request(endpoint) {
     xhr.onload = () => resolve(JSON.parse(xhr.responseText));
   });
 }
+
+module.exports = request;

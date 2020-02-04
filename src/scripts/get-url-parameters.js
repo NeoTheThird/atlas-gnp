@@ -13,3 +13,5 @@ function getUrlParameters() {
   );
   return ret;
 }
+
+module.exports = getUrlParameters;
