@@ -103,7 +103,45 @@ class GnpApi {
   }
 
   /**
-   * Get members for atlas
+   * Get raw atlas members
+   *
+   * @private
+   * @returns {Promise} - resolves members or rejects error
+   */
+  getRawAtlasMembers() {
+    return this.getMembers(
+      [
+        "g_strasse",
+        "g_land",
+        "g_plz",
+        "g_ort",
+        "g_co",
+        "g_homepage",
+        "g_telefon",
+        "g_mobil",
+        "g_email",
+        "titel",
+        "firma",
+        "berufsfunktion",
+        "funktion",
+        "beschreibung",
+        "branche",
+        "vorname",
+        "nachname",
+        "key_atlasjn",
+        "key_atlasfreigabe1",
+        "key_atlasfreigabe2",
+        "key_mitgliedsstatus"
+      ],
+      "g_strasse is not null and g_strasse <> '' and " +
+        "g_plz is not null and g_plz <> '' and " +
+        "g_ort is not null and g_ort <> '' and " +
+        "g_land is not null and g_land <> ''"
+    );
+  }
+
+  /**
+   * Get atlas data object
    *
    * @returns {Promise} - resolves members or rejects error
    */
@@ -113,35 +151,7 @@ class GnpApi {
       //console.log("use cache atlas");
       return Promise.resolve(this.cache["atlas"].data);
     } else {
-      return this.getMembers(
-        [
-          "g_strasse",
-          "g_land",
-          "g_plz",
-          "g_ort",
-          "g_co",
-          "g_homepage",
-          "g_telefon",
-          "g_mobil",
-          "g_email",
-          "titel",
-          "firma",
-          "berufsfunktion",
-          "funktion",
-          "beschreibung",
-          "branche",
-          "vorname",
-          "nachname",
-          "key_atlasjn",
-          "key_atlasfreigabe1",
-          "key_atlasfreigabe2",
-          "key_mitgliedsstatus"
-        ],
-        "g_strasse is not null and g_strasse <> '' and " +
-          "g_plz is not null and g_plz <> '' and " +
-          "g_ort is not null and g_ort <> '' and " +
-          "g_land is not null and g_land <> ''"
-      )
+      return this.getRawAtlasMembers()
         .then(this.atlasFilter)
         .then(this.countryFilter)
         .then(members => {
@@ -186,8 +196,29 @@ class GnpApi {
   }
 
   /**
+   * Get stats
+   *
+   * @returns {object[]} - members with country fixed
+   */
+  getStats() {
+    return Promise.all([this.getAtlas(), this.getRawAtlasMembers()]).then(r => {
+      let popup = 0;
+      r[0].forEach(m => {
+        if (m.popup) popup++;
+      });
+      return {
+        hidden: r[1].length - r[0].length,
+        nopopup: r[0].length - popup,
+        popup: popup,
+        age: Math.abs(this.cache.atlas.expires - this.cachetime - utils.time())
+      };
+    });
+  }
+
+  /**
    * Fixes the country
    *
+   * @private
    * @param {object[]} members - members returned from the api
    * @returns {object[]} - members with country fixed
    */
@@ -234,6 +265,7 @@ class GnpApi {
   /**
    * Filters out members who do not want to be listed and sanitizes fields
    *
+   * @private
    * @param {object[]} members - members returned from the api
    * @returns {object[]} - sanitized members
    */
@@ -313,6 +345,7 @@ class GnpApi {
   /**
    * Create an atlas label html string
    *
+   * @private
    * @param {object} m - member returned from the api
    * @returns {string} - sanitized members
    */

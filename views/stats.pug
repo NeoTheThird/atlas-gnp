@@ -1,0 +1,13 @@
+head
+  title Stats | Atlas Neuropädiatrie DACH 2.0
+  include includes/head.pug
+body
+  a(href="/")
+    h1 Atlas Neuropädiatrie DACH 2.0
+  h2 Stats
+  p#ageIndicator
+  h3 Mitglieder
+  canvas#memberChart
+  script(src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0")
+  script(src="/request.js")
+  script(src="/stats.js")
