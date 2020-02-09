@@ -21,11 +21,17 @@ if (settings.embed) {
 
 const element = document.getElementById("osm-map");
 element.style = "height:100vh;";
+
 const map = L.map(element);
-L.tileLayer("https://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-  attribution:
-    '&copy; <a href="http://osm.org/copyright" target="_blank">OpenStreetMap</a> contributors | <a href="https://gesellschaft-fuer-neuropaediatrie.org/" target="_blank">Gesellschaft für Neuropädiatrie</a>'
-}).addTo(map);
+L.tileLayer(
+  "https://" +
+    ["a", "b", "c"][((Math.random() * 10) | 1) % 3] +
+    ".tile.openstreetmap.de/{z}/{x}/{y}.png",
+  {
+    attribution:
+      '&copy; <a href="http://osm.org/copyright" target="_blank">OpenStreetMap</a> contributors | <a href="https://gesellschaft-fuer-neuropaediatrie.org/" target="_blank">Gesellschaft für Neuropädiatrie</a>'
+  }
+).addTo(map);
 map.setView(L.latLng(settings.lat, settings.long), settings.zoom);
 
 /**
