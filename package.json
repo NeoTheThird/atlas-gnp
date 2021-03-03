@@ -20,7 +20,7 @@
     "express": "^4.17.1",
     "node-geocoder": "^3.27.0",
     "node-storage": "0.0.9",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.8"
   },
