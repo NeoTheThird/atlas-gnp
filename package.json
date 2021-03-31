@@ -1,6 +1,6 @@
 {
   "name": "atlas-gnp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A map showing all Neuropaediatricians in Germany, Austria and Switzerland.",
   "main": "src/server.js",
   "scripts": {
