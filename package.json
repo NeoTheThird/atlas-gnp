@@ -5,11 +5,10 @@
   "main": "src/server.js",
   "scripts": {
     "start": "npx nodemon src/server.js",
-    "lint": "./node_modules/.bin/eslint \"src/**/*.js\" \"tests/**/*.js\"",
-    "lint-fix": "npm run lint -- --fix",
-    "test": "./node_modules/mocha/bin/mocha --recursive ./tests/unit-tests",
-    "test-pipeline": "./node_modules/nyc/bin/nyc.js --exclude=**/test_*.js --reporter=text --reporter=lcov ./node_modules/mocha/bin/mocha -- -R spec './tests/unit-tests/**'",
-    "jsdoc": "./node_modules/jsdoc/jsdoc.js -c jsdoc-config.json"
+    "lint": "npx prettier \"**\" --ignore-path=.gitignore --arrow-parens=avoid --trailing-comma=none -uw",
+    "test": "npx mocha --recursive ./tests/unit-tests",
+    "test-pipeline": "npx nyc --exclude=**/test_*.js --reporter=text --reporter=lcov ./node_modules/mocha/bin/mocha -- -R spec './tests/unit-tests/**'",
+    "jsdoc": "npx jsdoc -c jsdoc-config.json"
   },
   "author": "Jan Sprinz <neo@neothethird.de>",
   "license": "GPL-3.0-or-later",
@@ -20,7 +19,6 @@
     "express": "^4.17.1",
     "node-geocoder": "^3.27.0",
     "node-storage": "0.0.9",
-    "pug": "^3.0.1",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.8"
   },

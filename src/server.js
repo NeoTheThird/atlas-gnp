@@ -10,8 +10,6 @@ const api = new GnpApi(
 
 const app = express();
 
-app.set("view engine", "pug");
-
 // serve static files from the `public` folder
 app.use(express.static(__dirname + "/../public"));
 app.use(express.static(__dirname + "/../src/scripts"));
@@ -29,13 +27,9 @@ app.get("/api/getStats", (req, res) => {
   api.getStats().then(stats => res.json(stats));
 });
 
-app.get("/", (req, res) => {
-  res.render("index");
-});
-
-app.get("/stats", (req, res) => {
-  res.render("stats");
-});
+app.get("/stats", (req, res) =>
+  res.redirect("stats.html")
+);
 
 // needed for backwards-compatibility
 app.get("/embed", (req, res) => {
