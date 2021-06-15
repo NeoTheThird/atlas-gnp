@@ -1,4 +1,4 @@
-const request = require("request-promise-native");
+const axios = require("axios");
 const Geocoder = require("./Geocoder");
 const utils = require("./utils");
 
@@ -63,14 +63,14 @@ class GnpApi {
       return Promise.resolve(this.cache[url].data);
     } else {
       //console.log("get new gnp");
-      return request(url)
-        .then(JSON.parse)
-        .then(res => {
+      return axios
+        .get(url)
+        .then(({ data }) => {
           this.cache[url] = {
-            data: res,
+            data: data,
             expires: now + this.cachetime
           };
-          return res;
+          return data;
         })
         .catch(err => {
           throw new Error(err);
