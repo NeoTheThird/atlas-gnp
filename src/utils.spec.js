@@ -1,7 +1,7 @@
 "use strict";
 
 /*
- * Copyright (C) 2019-2020 Jan Sprinz <neo@neothethird.de>
+ * Copyright (C) 2019-2021 Jan Sprinz <neo@neothethird.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,37 +17,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const chai = require("chai");
-const sinon = require("sinon");
-const chaiAsPromised = require("chai-as-promised");
-const sinonChai = require("sinon-chai");
-const expect = chai.expect;
-chai.use(sinonChai);
-chai.use(chaiAsPromised);
-
-const utils = require("../../src/utils.js");
+const utils = require("./utils.js");
 
 describe("utils", function () {
   describe("formatUrlLabel()", function () {
     it("should format label if empty", function () {
-      expect(utils.formatUrlLabel()).to.eql("");
+      expect(utils.formatUrlLabel()).toEqual("");
     });
     it("should format label with protocol", function () {
       expect(
         utils.formatUrlLabel("Phone", "https://example.com", "tel:")
-      ).to.eql(
+      ).toEqual(
         "Phone<a href='tel:https://example.com' target=_blank>example.com</a><br>"
       );
     });
     it("should format label", function () {
-      expect(utils.formatUrlLabel("Phone", "example.com")).to.eql(
+      expect(utils.formatUrlLabel("Phone", "example.com")).toEqual(
         "Phone<a href='example.com' target=_blank>example.com</a><br>"
       );
     });
   });
   describe("time()", function () {
     it("should return time", function () {
-      expect(utils.time()).to.exist;
+      expect(utils.time()).toBeDefined();
     });
   });
 });

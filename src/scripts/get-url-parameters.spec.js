@@ -1,5 +1,7 @@
+"use strict";
+
 /*
- * Copyright (C) 2019-2020 Jan Sprinz <neo@neothethird.de>
+ * Copyright (C) 2019-2021 Jan Sprinz <neo@neothethird.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,13 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const sinon = require("sinon");
-const chai = require("chai");
+const getUrlParameters = require("./get-url-parameters");
 
-beforeEach(function () {
-  this.sandbox = sinon.createSandbox();
-});
-
-afterEach(function () {
-  this.sandbox.restore();
+describe("get-url-parameters", function () {
+  it("should return url parameters", function () {
+    global.window = {
+      location: {
+        href: "https://example.awesome/somelocation/?test=data&something=false&number=42&else=true"
+      }
+    };
+    expect(getUrlParameters()).toEqual({
+      number: "42",
+      something: false,
+      else: "true",
+      test: "data"
+    });
+  });
 });

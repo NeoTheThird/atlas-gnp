@@ -1,7 +1,7 @@
 "use strict";
 
 /*
- * Copyright (C) 2019-2020 Jan Sprinz <neo@neothethird.de>
+ * Copyright (C) 2019-2021 Jan Sprinz <neo@neothethird.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,20 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const chai = require("chai");
-const sinon = require("sinon");
-const chaiAsPromised = require("chai-as-promised");
-const sinonChai = require("sinon-chai");
-const expect = chai.expect;
-chai.use(sinonChai);
-chai.use(chaiAsPromised);
-
-const request = require("../../src/scripts/request");
+const request = require("./request");
 
 describe("request", function () {
   it("should resolve on response", function (done) {
-    const sendSpy = sinon.spy();
-    const openSpy = sinon.spy();
+    const sendSpy = jest.fn();
+    const openSpy = jest.fn();
     global.XMLHttpRequest = class {
       constructor() {
         this.send = sendSpy;
@@ -44,7 +36,7 @@ describe("request", function () {
       }
     };
     request("endpoint").then(r => {
-      expect(r).to.eql({
+      expect(r).toEqual({
         some: "data"
       });
       done();

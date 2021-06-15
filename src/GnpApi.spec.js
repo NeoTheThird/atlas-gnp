@@ -1,7 +1,7 @@
 "use strict";
 
 /*
- * Copyright (C) 2019-2020 Jan Sprinz <neo@neothethird.de>
+ * Copyright (C) 2019-2021 Jan Sprinz <neo@neothethird.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,45 +17,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const chai = require("chai");
-const sinon = require("sinon");
-const proxyquire = require("proxyquire").noCallThru();
-const chaiAsPromised = require("chai-as-promised");
-const sinonChai = require("sinon-chai");
-const expect = chai.expect;
-chai.use(sinonChai);
-chai.use(chaiAsPromised);
+jest.mock("axios");
+jest.mock("./Geocoder");
+jest.mock("./utils");
 
-const GnpApi = require("../../src/GnpApi.js");
+const { default: axios } = require("axios");
+const GnpApi = require("./GnpApi.js");
+const utils = require("./utils.js");
 
 describe("GnpApi module", function () {
   describe("constructor()", function () {
     it("should construct object", function () {
       const gnpApi = new GnpApi("asdf", "wasd", "omg");
-      expect(gnpApi.host).to.eql("asdf");
-      expect(gnpApi.token).to.eql("wasd");
-      expect(gnpApi.geo).to.exist;
-      expect(gnpApi.cachetime).to.eql(60);
-      expect(gnpApi.cache).to.eql({});
+      expect(gnpApi.host).toEqual("asdf");
+      expect(gnpApi.token).toEqual("wasd");
+      expect(gnpApi.geo).toBeDefined;
+      expect(gnpApi.cachetime).toEqual(60);
+      expect(gnpApi.cache).toEqual({});
     });
   });
   describe("get()", function () {
     it("should resolve endpoint", function (done) {
-      const axiosFake = {
-        get: sinon.fake.resolves({
-          data: {
-            test: "data"
-          }
-        })
-      };
-      const _GnpApi = proxyquire("../../src/GnpApi", {
-        axios: axiosFake,
-        "./utils": {
-          time: () => 1234
+      axios.get.mockResolvedValue({
+        data: {
+          test: "data"
         }
       });
+      utils.time.mockReturnValue(1234);
 
-      const api = new _GnpApi(
+      const api = new GnpApi(
         "https://www.testurl.com",
         "gnpApiToken",
         "geoApiToken"
@@ -71,32 +61,27 @@ describe("GnpApi module", function () {
       extra.prototype = { some: "bs" };
 
       api.get("testendpoint", new extra()).then(r => {
-        expect(r).to.eql({
+        expect(r).toEqual({
           test: "data"
         });
-        expect(api.cache).to.eql({
+        expect(api.cache).toEqual({
           "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken":
             {
               data: { test: "data" },
               expires: 1294
             }
         });
-        expect(axiosFake.get).to.have.been.calledWith(
+        expect(axios.get).toHaveBeenCalledWith(
           "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken"
         );
         done();
       });
     });
     it("should resolve cache", function (done) {
-      const axiosFake = { get: sinon.spy() };
-      const _GnpApi = proxyquire("../../src/GnpApi", {
-        axios: axiosFake,
-        "./utils": {
-          time: () => 1234
-        }
-      });
+      utils.time.mockReturnValue(1234);
+      axios.get.mockClear();
 
-      const api = new _GnpApi(
+      const api = new GnpApi(
         "https://www.testurl.com",
         "gnpApiToken",
         "geoApiToken"
@@ -106,7 +91,7 @@ describe("GnpApi module", function () {
         "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken":
           {
             data: { test: "data" },
-            expires: 1294
+            expires: 1337
           }
       };
 
@@ -115,36 +100,33 @@ describe("GnpApi module", function () {
           additional: "stuff"
         })
         .then(r => {
-          expect(r).to.eql({
+          expect(r).toEqual({
             test: "data"
           });
-          expect(api.cache).to.eql({
+          expect(api.cache).toEqual({
             "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken":
               {
                 data: { test: "data" },
-                expires: 1294
+                expires: 1337
               }
           });
-          expect(axiosFake.get).to.not.have.been.called;
+          expect(axios.get).not.toHaveBeenCalled();
           done();
         });
     });
     it("should reject on error", function (done) {
-      const axiosFake = { get: sinon.fake.rejects("everything exploded") };
-      const _GnpApi = proxyquire("../../src/GnpApi", {
-        axios: axiosFake
-      });
+      axios.get.mockRejectedValue("everything exploded");
 
-      const api = new _GnpApi(
+      const api = new GnpApi(
         "https://www.testurl.com",
         "gnpApiToken",
         "geoApiToken"
       );
 
       api.get("testendpoint").catch(e => {
-        expect(e.message).to.eql("Error: everything exploded");
-        expect(api.cache).to.eql({});
-        expect(axiosFake.get).to.have.been.calledOnce;
+        expect(e.message).toEqual("everything exploded");
+        expect(api.cache).toEqual({});
+        expect(axios.get).toHaveBeenCalledTimes(1);
         done();
       });
     });
@@ -156,14 +138,14 @@ describe("GnpApi module", function () {
         "gnpApiToken",
         "geoApiToken"
       );
-      api.get = sinon.fake.resolves({
+      api.get = jest.fn().mockResolvedValue({
         test: "data"
       });
       api.getMembers().then(r => {
-        expect(r).to.eql({
+        expect(r).toEqual({
           test: "data"
         });
-        expect(api.get).to.have.been.calledWith("GetMembers", {
+        expect(api.get).toHaveBeenCalledWith("GetMembers", {
           felder: "",
           filter: ""
         });
@@ -177,14 +159,14 @@ describe("GnpApi module", function () {
         "gnpApiToken",
         "geoApiToken"
       );
-      api.get = sinon.fake.resolves({
+      api.get = jest.fn().mockResolvedValue({
         test: "data"
       });
       api.getMember().then(r => {
-        expect(r).to.eql({
+        expect(r).toEqual({
           test: "data"
         });
-        expect(api.get).to.have.been.calledWith("GetMember", {
+        expect(api.get).toHaveBeenCalledWith("GetMember", {
           id: undefined
         });
       });
@@ -197,7 +179,8 @@ describe("GnpApi module", function () {
         "gnpApiToken",
         "geoApiToken"
       );
-      api.getMembers = sinon.fake.resolves([
+      utils.formatUrlLabel.mockReturnValue("");
+      api.getMembers = jest.fn().mockResolvedValue([
         {
           g_strasse: "test data",
           g_land: "test data",
@@ -223,27 +206,23 @@ describe("GnpApi module", function () {
         }
       ]);
       api.geo = {
-        get: sinon.fake.resolves([1, 2])
+        get: jest.fn().mockResolvedValue([1, 2])
       };
-      api.getAtlas().then(r => {
-        expect(r).to.eql([
+      api.getAtlas().then(r =>
+        expect(r).toEqual([
           {
             latlong: [1, 2],
             color: "blue",
             popup:
               "<h1>test data test data test data</h1><hr><h2>test data</h2><p>test data<br>test data test data<br>test data<br></p><p></p>"
           }
-        ]);
-      });
+        ])
+      );
     });
     it("should resolve cache", function (done) {
-      const _GnpApi = proxyquire("../../src/GnpApi", {
-        "./utils": {
-          time: () => 1234
-        }
-      });
+      utils.time.mockReturnValue(1234);
 
-      const api = new _GnpApi(
+      const api = new GnpApi(
         "https://www.testurl.com",
         "gnpApiToken",
         "geoApiToken"
@@ -257,10 +236,10 @@ describe("GnpApi module", function () {
       };
 
       api.getAtlas().then(r => {
-        expect(r).to.eql({
+        expect(r).toEqual({
           test: "data"
         });
-        expect(api.cache).to.eql({
+        expect(api.cache).toEqual({
           atlas: {
             data: { test: "data" },
             expires: 1294
@@ -305,7 +284,7 @@ describe("GnpApi module", function () {
               g_land: state
             }
           ])
-        ).to.eql([
+        ).toEqual([
           {
             g_land: "Deutschland (" + state + ")"
           }
@@ -325,7 +304,7 @@ describe("GnpApi module", function () {
               g_land: alias
             }
           ])
-        ).to.eql([
+        ).toEqual([
           {
             g_land: "Deutschland"
           }
@@ -345,7 +324,7 @@ describe("GnpApi module", function () {
               g_land: alias
             }
           ])
-        ).to.eql([
+        ).toEqual([
           {
             g_land: "Österreich"
           }
@@ -355,12 +334,8 @@ describe("GnpApi module", function () {
   });
   describe("getStats()", function () {
     it("should resolve stats", function (done) {
-      const _GnpApi = proxyquire("../../src/GnpApi", {
-        "./utils": {
-          time: () => 1234
-        }
-      });
-      const api = new _GnpApi(
+      utils.time.mockReturnValue(1234);
+      const api = new GnpApi(
         "https://www.testurl.com",
         "gnpApiToken",
         "geoApiToken"
@@ -370,14 +345,16 @@ describe("GnpApi module", function () {
           expires: 1337
         }
       };
-      api.getAtlas = sinon.fake.resolves([
-        { popup: false },
-        { popup: false },
-        { popup: true }
-      ]);
-      api.getRawAtlasMembers = sinon.fake.resolves([]);
+      api.getAtlas = jest
+        .fn()
+        .mockResolvedValue([
+          { popup: false },
+          { popup: false },
+          { popup: true }
+        ]);
+      api.getRawAtlasMembers = jest.fn().mockResolvedValue([]);
       api.getStats().then(r => {
-        expect(r).to.eql({
+        expect(r).toEqual({
           hidden: -3,
           nopopup: 2,
           popup: 1,
@@ -485,7 +462,7 @@ describe("GnpApi module", function () {
             g_email: "g_email"
           }
         ])
-      ).to.eql([
+      ).toEqual([
         {
           color: "blue",
           g_land: "country",
@@ -567,6 +544,7 @@ describe("GnpApi module", function () {
   });
   describe("createAtlasLabelHtml()", function () {
     it("should create label", function () {
+      utils.formatUrlLabel.mockReturnValue("label");
       expect(
         GnpApi.createAtlasLabelHtml({
           popup: true,
@@ -580,8 +558,8 @@ describe("GnpApi module", function () {
           beschreibung: "beschreibung",
           g_homepage: "g_homepage"
         })
-      ).to.eql(
-        "<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>Homepage: <a href='g_homepage' target=_blank>g_homepage</a><br></p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3><p>Art der Einrichtung: branche</p>beschreibung"
+      ).toEqual(
+        "<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>labellabellabellabellabel</p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3><p>Art der Einrichtung: branche</p>beschreibung"
       );
       expect(
         GnpApi.createAtlasLabelHtml({
@@ -595,8 +573,8 @@ describe("GnpApi module", function () {
           branche: "branche",
           g_homepage: "g_homepage"
         })
-      ).to.eql(
-        "<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>Homepage: <a href='g_homepage' target=_blank>g_homepage</a><br></p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3><p>Art der Einrichtung: branche</p>"
+      ).toEqual(
+        "<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>labellabellabellabellabel</p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3><p>Art der Einrichtung: branche</p>"
       );
       expect(
         GnpApi.createAtlasLabelHtml({
@@ -610,12 +588,12 @@ describe("GnpApi module", function () {
           beschreibung: "beschreibung",
           g_homepage: "g_homepage"
         })
-      ).to.eql(
-        "<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>Homepage: <a href='g_homepage' target=_blank>g_homepage</a><br></p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3>beschreibung"
+      ).toEqual(
+        "<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>labellabellabellabellabel</p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3>beschreibung"
       );
     });
     it("should return false if no label needed", function () {
-      expect(GnpApi.createAtlasLabelHtml({ popup: false })).to.eql(false);
+      expect(GnpApi.createAtlasLabelHtml({ popup: false })).toEqual(false);
     });
   });
 });
