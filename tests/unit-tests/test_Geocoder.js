@@ -28,14 +28,14 @@ chai.use(chaiAsPromised);
 const Geocoder = require("../../src/Geocoder.js");
 const CACHE_PATH = __dirname + "/../test-data/.geo-cache";
 
-describe("Geocoder module", function() {
-  describe("constructor()", function() {
-    it("should construct object", function() {
+describe("Geocoder module", function () {
+  describe("constructor()", function () {
+    it("should construct object", function () {
       const geocoder = new Geocoder("asdf", CACHE_PATH);
       expect(geocoder.cache).to.exist;
       expect(geocoder.api).to.exist;
     });
-    it("should throw if no key is specified", function(done) {
+    it("should throw if no key is specified", function (done) {
       try {
         new Geocoder();
       } catch (e) {
@@ -44,8 +44,8 @@ describe("Geocoder module", function() {
       }
     });
   });
-  describe("get()", function() {
-    it("should throw on invalid api key", function(done) {
+  describe("get()", function () {
+    it("should throw on invalid api key", function (done) {
       const geocoder = new Geocoder("asdf", CACHE_PATH);
       geocoder.api = {
         geocode: sinon.fake.rejects("invalid api key")
@@ -59,7 +59,7 @@ describe("Geocoder module", function() {
         done();
       });
     });
-    it("resolve cached coordinates", function(done) {
+    it("resolve cached coordinates", function (done) {
       const geocoder = new Geocoder("asdf", CACHE_PATH);
       geocoder.cache = {
         get: sinon.fake.returns("data")
@@ -69,7 +69,7 @@ describe("Geocoder module", function() {
         done();
       });
     });
-    it("resolve cached coordinates", function(done) {
+    it("resolve cached coordinates", function (done) {
       const geocoder = new Geocoder("asdf", CACHE_PATH);
       geocoder.api = {
         geocode: sinon.fake.resolves("data")

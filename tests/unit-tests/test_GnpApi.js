@@ -28,9 +28,9 @@ chai.use(chaiAsPromised);
 
 const GnpApi = require("../../src/GnpApi.js");
 
-describe("GnpApi module", function() {
-  describe("constructor()", function() {
-    it("should construct object", function() {
+describe("GnpApi module", function () {
+  describe("constructor()", function () {
+    it("should construct object", function () {
       const gnpApi = new GnpApi("asdf", "wasd", "omg");
       expect(gnpApi.host).to.eql("asdf");
       expect(gnpApi.token).to.eql("wasd");
@@ -39,8 +39,8 @@ describe("GnpApi module", function() {
       expect(gnpApi.cache).to.eql({});
     });
   });
-  describe("get()", function() {
-    it("should resolve endpoint", function(done) {
+  describe("get()", function () {
+    it("should resolve endpoint", function (done) {
       const requestFake = sinon.fake.resolves(
         JSON.stringify({
           test: "data"
@@ -73,10 +73,11 @@ describe("GnpApi module", function() {
           test: "data"
         });
         expect(api.cache).to.eql({
-          "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken": {
-            data: { test: "data" },
-            expires: 1294
-          }
+          "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken":
+            {
+              data: { test: "data" },
+              expires: 1294
+            }
         });
         expect(requestFake).to.have.been.calledWith(
           "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken"
@@ -84,7 +85,7 @@ describe("GnpApi module", function() {
         done();
       });
     });
-    it("should resolve cache", function(done) {
+    it("should resolve cache", function (done) {
       const requestFake = sinon.spy();
       const _GnpApi = proxyquire("../../src/GnpApi", {
         "request-promise-native": requestFake,
@@ -100,10 +101,11 @@ describe("GnpApi module", function() {
       );
 
       api.cache = {
-        "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken": {
-          data: { test: "data" },
-          expires: 1294
-        }
+        "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken":
+          {
+            data: { test: "data" },
+            expires: 1294
+          }
       };
 
       api
@@ -115,16 +117,17 @@ describe("GnpApi module", function() {
             test: "data"
           });
           expect(api.cache).to.eql({
-            "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken": {
-              data: { test: "data" },
-              expires: 1294
-            }
+            "https://www.testurl.com?json&function=testendpoint&additional=stuff&token=gnpApiToken":
+              {
+                data: { test: "data" },
+                expires: 1294
+              }
           });
           expect(requestFake).to.not.have.been.called;
           done();
         });
     });
-    it("should reject on error", function(done) {
+    it("should reject on error", function (done) {
       const requestFake = sinon.fake.rejects("everything exploded");
       const _GnpApi = proxyquire("../../src/GnpApi", {
         "request-promise-native": requestFake
@@ -144,8 +147,8 @@ describe("GnpApi module", function() {
       });
     });
   });
-  describe("getMembers()", function() {
-    it("should resolve members", function() {
+  describe("getMembers()", function () {
+    it("should resolve members", function () {
       const api = new GnpApi(
         "https://www.testurl.com",
         "gnpApiToken",
@@ -165,8 +168,8 @@ describe("GnpApi module", function() {
       });
     });
   });
-  describe("getMember()", function() {
-    it("should resolve members", function() {
+  describe("getMember()", function () {
+    it("should resolve members", function () {
       const api = new GnpApi(
         "https://www.testurl.com",
         "gnpApiToken",
@@ -185,8 +188,8 @@ describe("GnpApi module", function() {
       });
     });
   });
-  describe("getAtlas()", function() {
-    it("should resolve members", function() {
+  describe("getAtlas()", function () {
+    it("should resolve members", function () {
       const api = new GnpApi(
         "https://www.testurl.com",
         "gnpApiToken",
@@ -231,7 +234,7 @@ describe("GnpApi module", function() {
         ]);
       });
     });
-    it("should resolve cache", function(done) {
+    it("should resolve cache", function (done) {
       const _GnpApi = proxyquire("../../src/GnpApi", {
         "./utils": {
           time: () => 1234
@@ -265,7 +268,7 @@ describe("GnpApi module", function() {
       });
     });
   });
-  describe("countryFilter()", function() {
+  describe("countryFilter()", function () {
     [
       "NRW",
       "Nordrhein-Westfalen",
@@ -288,7 +291,7 @@ describe("GnpApi module", function() {
       "Sachsen-Anhalt",
       "Thüringen"
     ].forEach(state =>
-      it("should filter " + state, function() {
+      it("should filter " + state, function () {
         const api = new GnpApi(
           "https://www.testurl.com",
           "gnpApiToken",
@@ -308,7 +311,7 @@ describe("GnpApi module", function() {
       })
     );
     ["D", "GER", ""].forEach(alias =>
-      it("should filter " + alias, function() {
+      it("should filter " + alias, function () {
         const api = new GnpApi(
           "https://www.testurl.com",
           "gnpApiToken",
@@ -328,7 +331,7 @@ describe("GnpApi module", function() {
       })
     );
     ["A"].forEach(alias =>
-      it("should filter " + alias, function() {
+      it("should filter " + alias, function () {
         const api = new GnpApi(
           "https://www.testurl.com",
           "gnpApiToken",
@@ -348,8 +351,8 @@ describe("GnpApi module", function() {
       })
     );
   });
-  describe("getStats()", function() {
-    it("should resolve stats", function(done) {
+  describe("getStats()", function () {
+    it("should resolve stats", function (done) {
       const _GnpApi = proxyquire("../../src/GnpApi", {
         "./utils": {
           time: () => 1234
@@ -382,8 +385,8 @@ describe("GnpApi module", function() {
       });
     });
   });
-  describe("atlasFilter()", function() {
-    it("should sanitize data", function() {
+  describe("atlasFilter()", function () {
+    it("should sanitize data", function () {
       const api = new GnpApi(
         "https://www.testurl.com",
         "gnpApiToken",
@@ -560,8 +563,8 @@ describe("GnpApi module", function() {
       ]);
     });
   });
-  describe("createAtlasLabelHtml()", function() {
-    it("should create label", function() {
+  describe("createAtlasLabelHtml()", function () {
+    it("should create label", function () {
       expect(
         GnpApi.createAtlasLabelHtml({
           popup: true,
@@ -609,7 +612,7 @@ describe("GnpApi module", function() {
         "<h1></h1><h3>chef vom dienst</h3><hr><a href='g_homepage' target=_blank></a><h3>C/O</h3><p>street<br>1337 ort<br>country<br></p><p>Homepage: <a href='g_homepage' target=_blank>g_homepage</a><br></p><hr><h3>Beschreibung und Tätigkeitsschwerpunkte</h3>beschreibung"
       );
     });
-    it("should return false if no label needed", function() {
+    it("should return false if no label needed", function () {
       expect(GnpApi.createAtlasLabelHtml({ popup: false })).to.eql(false);
     });
   });

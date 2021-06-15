@@ -27,26 +27,26 @@ chai.use(chaiAsPromised);
 
 const utils = require("../../src/utils.js");
 
-describe("utils", function() {
-  describe("formatUrlLabel()", function() {
-    it("should format label if empty", function() {
+describe("utils", function () {
+  describe("formatUrlLabel()", function () {
+    it("should format label if empty", function () {
       expect(utils.formatUrlLabel()).to.eql("");
     });
-    it("should format label with protocol", function() {
+    it("should format label with protocol", function () {
       expect(
         utils.formatUrlLabel("Phone", "https://example.com", "tel:")
       ).to.eql(
         "Phone<a href='tel:https://example.com' target=_blank>example.com</a><br>"
       );
     });
-    it("should format label", function() {
+    it("should format label", function () {
       expect(utils.formatUrlLabel("Phone", "example.com")).to.eql(
         "Phone<a href='example.com' target=_blank>example.com</a><br>"
       );
     });
   });
-  describe("time()", function() {
-    it("should return time", function() {
+  describe("time()", function () {
+    it("should return time", function () {
       expect(utils.time()).to.exist;
     });
   });

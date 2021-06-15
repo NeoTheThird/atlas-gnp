@@ -27,9 +27,7 @@ app.get("/api/getStats", (req, res) => {
   api.getStats().then(stats => res.json(stats));
 });
 
-app.get("/stats", (req, res) =>
-  res.redirect("stats.html")
-);
+app.get("/stats", (req, res) => res.redirect("stats.html"));
 
 // needed for backwards-compatibility
 app.get("/embed", (req, res) => {

@@ -55,7 +55,7 @@ function getIcon(member) {
 }
 
 const legend = L.control({ position: "bottomleft" });
-legend.onAdd = function(map) {
+legend.onAdd = function (map) {
   let div = L.DomUtil.create("div", "info legend");
   let labels = ["<strong>Legende</strong>"];
   let categories = [

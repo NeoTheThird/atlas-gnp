@@ -27,12 +27,11 @@ chai.use(chaiAsPromised);
 
 const getUrlParameters = require("../../src/scripts/get-url-parameters");
 
-describe("get-url-parameters", function() {
-  it("should return url parameters", function() {
+describe("get-url-parameters", function () {
+  it("should return url parameters", function () {
     global.window = {
       location: {
-        href:
-          "https://example.awesome/somelocation/?test=data&something=false&number=42&else=true"
+        href: "https://example.awesome/somelocation/?test=data&something=false&number=42&else=true"
       }
     };
     expect(getUrlParameters()).to.eql({

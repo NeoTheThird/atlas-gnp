@@ -27,8 +27,8 @@ chai.use(chaiAsPromised);
 
 const request = require("../../src/scripts/request");
 
-describe("request", function() {
-  it("should resolve on response", function(done) {
+describe("request", function () {
+  it("should resolve on response", function (done) {
     const sendSpy = sinon.spy();
     const openSpy = sinon.spy();
     global.XMLHttpRequest = class {

@@ -2,9 +2,9 @@
   "plugins": [],
   "recurseDepth": 10,
   "source": {
-      "include": "src",
-      "includePattern": ".+\\.js(doc|x)?$",
-      "excludePattern": "bundle"
+    "include": "src",
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "bundle"
   },
   "opts": {
     "readme": "README.md",
@@ -14,11 +14,11 @@
   },
   "sourceType": "module",
   "tags": {
-      "allowUnknownTags": true,
-      "dictionaries": ["jsdoc","closure"]
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
   },
   "templates": {
-      "cleverLinks": false,
-      "monospaceLinks": false
+    "cleverLinks": false,
+    "monospaceLinks": false
   }
 }
