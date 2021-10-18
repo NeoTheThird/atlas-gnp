@@ -1,6 +1,6 @@
 {
   "name": "atlas-gnp",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A map showing all Neuropaediatricians in Germany, Austria and Switzerland.",
   "main": "src/server.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "test": "npx jest --coverage",
     "jsdoc": "npx jsdoc -c jsdoc-config.json"
   },
-  "author": "Jan Sprinz <neo@neothethird.de>",
+  "author": "Johannah Sprinz <neo@neothethird.de>",
   "license": "GPL-3.0-or-later",
   "homepage": "http://atlas.gesellschaft-fuer-neuropaediatrie.org/",
   "repository": "https://github.com/neothethird/atlas",
