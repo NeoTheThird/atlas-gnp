@@ -23,7 +23,7 @@
   "devDependencies": {
     "jest": "^27.0.4",
     "jsdoc": "^3.6.7",
-    "nodemon": "^2.0.3",
+    "nodemon": "^2.0.20",
     "prettier": "^2.3.1"
   }
 }
